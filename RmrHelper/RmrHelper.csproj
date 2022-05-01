@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\ObservableObject.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Service\BodySlideEnumeratorService.cs" />
     <Compile Include="Service\BodySlideService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SliderSetViewModel.cs" />
