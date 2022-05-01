@@ -1,5 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using IniParser;
+using Microsoft.Win32;
 using RmrHelper.Helpers;
+using RmrHelper.Model;
 using RmrHelper.Service;
 using System;
 using System.Collections.Generic;
@@ -28,46 +30,43 @@ namespace RmrHelper.ViewModel
 		}
 
 
-		private string _rmrIniPath;
 		public string RmrIniPath
 		{
-			get { return _rmrIniPath; }
+			get { return Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini")); }
+		}
+
+		public ObservableCollection<BodyModel> BodyList { get; set; } = new ObservableCollection<BodyModel>();
+		private BodyModel _selectedBody;
+		public BodyModel SelectedBody
+		{
+			get { return _selectedBody; }
 			set
 			{
-				if (_rmrIniPath != value)
+				if (_selectedBody != value)
 				{
-					_rmrIniPath = value;
-					OnPropertyChanged(nameof(RmrIniPath));
+					_selectedBody = value;
+					BodySlide.Categories = SelectedBody.SliderCategories;
+					OnPropertyChanged(nameof(SelectedBody));
+					OnPropertyChanged(nameof(SelectedBodySliderCount));
 				}
 			}
 		}
-
-
-		private string _sliderCategoriesXmlPath;
-		public string SliderCategoriesXmlPath
+		public int SelectedBodySliderCount
 		{
-			get { return _sliderCategoriesXmlPath; }
-			set
-			{
-				if (_sliderCategoriesXmlPath != value)
-				{
-					_sliderCategoriesXmlPath = value;
-					OnPropertyChanged(nameof(SliderCategoriesXmlPath));
-				}
-			}
+			get { return BodySlide.Sliders.Count; }
 		}
 
-
-		private string _presetXmlPath;
-		public string PresetXmlPath
+		public ObservableCollection<PresetModel> PresetList { get; set; } = new ObservableCollection<PresetModel>();
+		private PresetModel _selectedPreset;
+		public PresetModel SelectedPreset
 		{
-			get { return _presetXmlPath; }
+			get { return _selectedPreset; }
 			set
 			{
-				if (_presetXmlPath != value)
+				if (_selectedPreset != value)
 				{
-					_presetXmlPath = value;
-					OnPropertyChanged(nameof(PresetXmlPath));
+					_selectedPreset = value;
+					OnPropertyChanged(nameof(SelectedPreset));
 				}
 			}
 		}
@@ -85,53 +84,50 @@ namespace RmrHelper.ViewModel
 
 		public MainViewModel()
 		{
-			RmrIniPath = Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini"));
-			SliderCategoriesXmlPath = Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderCategories", "CBBE.xml"));
-			PresetXmlPath = Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderPresets", "CBBE.xml"));
+			//RmrIniPath = Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini"));
+			//SliderCategoriesXmlPath = Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderCategories", "CBBE.xml"));
+			//PresetXmlPath = Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderPresets", "CBBE.xml"));
 
-			var categories = new Dictionary<string, List<Slider>>();
-			var sliderXmlText = File.ReadAllText(SliderCategoriesXmlPath);
-			var doc = XDocument.Parse(sliderXmlText);
-			foreach (var group in doc.Descendants("Category"))
+			// load body types (e.g. CBBE, FusionGirl, BodyTalk...)
+			var bodyService = new BodyService();
+			var bodies = bodyService.LoadBodyList(Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderCategories")));
+			BodyList.Clear();
+			foreach (var body in bodies)
 			{
-				var groupName = group.Attribute("name").Value;
-				categories[groupName] = new List<Slider>();
-				foreach(var slider in group.Descendants("Slider"))
-				{
-					var sliderName = slider.Attribute("name").Value;
-					var sliderDisplayName = slider.Attribute("displayname").Value;
-					categories[groupName].Add(new Slider { Name = sliderName, DisplayName = sliderDisplayName });
-					var x = 1;
-				}
+				BodyList.Add(body);
 			}
 
-			BodySlide = new BodySlideService(categories);
+			// load presets
+			var presetService = new SliderPresetService();
+			var presets = presetService.LoadPresetList(Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderPresets")));
+			PresetList.Clear();
+			foreach (var preset in presets)
+			{
+				PresetList.Add(preset);
+			}
 
+			// prepare service to interact with BodySlide application
+			BodySlide = new BodySlideService();
+
+			var rmrService = new RmrSettingsService();
+			var sliders = rmrService.LoadRmrSettings(
+				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Config", "LenA_RadMorphing", "settings.ini")),
+				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini"))
+				);
+			SliderSets.Clear();
+			foreach (var sliderSet in sliders)
+			{
+				SliderSets.Add(sliderSet);
+			}
+
+
+			//TODO load triggers (saved in helper, and from ini)
 			Triggers.Add(new TriggerViewModel { Name = "Rads", Value=0 });
 			Triggers.Add(new TriggerViewModel { Name = "HP", Value = 0 });
 			foreach (var trigger in Triggers)
 			{
 				trigger.PropertyChanged += Trigger_PropertyChanged;
 			}
-
-			SliderSets.Add(new SliderSetViewModel
-			{
-				Title = "Slider Set 1",
-				SliderNames = "Breasts|BreastFantasy",
-				TriggerName = "Rads",
-				TargetSizeIncrease = 110,
-				LowerThreshold = 10,
-				UpperThreshold = 70
-			});
-			SliderSets.Add(new SliderSetViewModel
-			{
-				Title = "Slider Set 1",
-				SliderNames = "Butt",
-				TriggerName = "Rads",
-				TargetSizeIncrease = 200,
-				LowerThreshold = 40,
-				UpperThreshold = 90
-			});
 		}
 
 		private void Trigger_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -153,9 +149,15 @@ namespace RmrHelper.ViewModel
 			{
 				foreach (var sliderSet in SliderSets.Where(it=>it.TriggerName == trigger.Name))
 				{
+					var morph = sliderSet.GetMorph(trigger.Value);
 					foreach (var sliderName in sliderSet.SliderNameList)
 					{
-						BodySlide.SetSlider(sliderName, trigger.Value);
+						var original = 0;
+						if (SelectedPreset.Sliders.ContainsKey(sliderName))
+						{
+							original = SelectedPreset.Sliders[sliderName];
+						}
+						BodySlide.SetSlider(sliderName, original + morph);
 					}
 				}
 			}
@@ -165,112 +167,6 @@ namespace RmrHelper.ViewModel
 
 
 		#region Commands
-		private ICommand _browseForRmrIniCommand;
-		public ICommand BrowseForRmrIniCommand
-		{
-			get
-			{
-				if (_browseForRmrIniCommand == null)
-				{
-					_browseForRmrIniCommand = new RelayCommand(async p =>
-					{
-						try
-						{
-							var ofd = new OpenFileDialog();
-							ofd.Filter = "LenA_RadMorphing.ini (*.ini)|*.ini";
-							ofd.InitialDirectory = Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings"));
-							ofd.DefaultExt = ".ini";
-							if (ofd.ShowDialog() == true)
-							{
-								if (File.Exists(ofd.FileName))
-								{
-									//TODO load ini file
-									RmrIniPath = ofd.FileName;
-								}
-							}
-						}
-						catch (Exception ex)
-						{
-							//TODO notify about exception
-							var x = 1;
-						}
-					});
-				}
-				return _browseForRmrIniCommand;
-			}
-		}
-
-
-		private ICommand _browseForSliderCategoriesXmlCommand;
-		public ICommand BrowseForSliderCategoriesXmlCommand
-		{
-			get
-			{
-				if (_browseForSliderCategoriesXmlCommand == null)
-				{
-					_browseForSliderCategoriesXmlCommand = new RelayCommand(async p =>
-					{
-						try
-						{
-							var ofd = new OpenFileDialog();
-							ofd.Filter = "Slider Categories XML (*.xml)|*.xml";
-							ofd.InitialDirectory = Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderCategories"));
-							ofd.DefaultExt = ".xml";
-							if (ofd.ShowDialog() == true)
-							{
-								if (File.Exists(ofd.FileName))
-								{
-									//TODO load ini file
-									SliderCategoriesXmlPath = ofd.FileName;
-								}
-							}
-						}
-						catch (Exception ex)
-						{
-							//TODO notify about exception
-							var x = 1;
-						}
-					});
-				}
-				return _browseForSliderCategoriesXmlCommand;
-			}
-		}
-
-
-		private ICommand _browseForPresetXmlCommand;
-		public ICommand BrowseForPresetXmlCommand
-		{
-			get
-			{
-				if (_browseForPresetXmlCommand == null)
-				{
-					_browseForPresetXmlCommand = new RelayCommand(async p =>
-					{
-						try
-						{
-							var ofd = new OpenFileDialog();
-							ofd.Filter = "BodySlide Preset XML (*.xml)|*.xml";
-							ofd.InitialDirectory = Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderPresets"));
-							ofd.DefaultExt = ".xml";
-							if (ofd.ShowDialog() == true)
-							{
-								if (File.Exists(ofd.FileName))
-								{
-									//TODO load ini file
-									PresetXmlPath = ofd.FileName;
-								}
-							}
-						}
-						catch (Exception ex)
-						{
-							//TODO notify about exception
-							var x = 1;
-						}
-					});
-				}
-				return _browseForPresetXmlCommand;
-			}
-		}
 		#endregion
 	}
 }

@@ -82,5 +82,27 @@ namespace RmrHelper.ViewModel
 				}
 			}
 		}
+
+
+
+
+		public int GetMorph(int triggerValue)
+		{
+			float trigger = ((float)triggerValue) / 100.0f;
+			float morph = 0.0f;
+			if (trigger < _lowerThreshold)
+			{
+				morph = 0.0f;
+			}
+			else if (trigger > _upperThreshold && false)
+			{
+				morph = 1.0f;
+			}
+			else
+			{
+				morph = (trigger - _lowerThreshold) / (_upperThreshold - _lowerThreshold);
+			}
+			return (int)(TargetSizeIncrease * morph);
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RmrHelper.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,17 +12,28 @@ namespace RmrHelper.Service
 	{
 		IntPtr BodySlide;
 		IntPtr SliderScroller;
-		Dictionary<string, IntPtr> Sliders = new Dictionary<string, IntPtr>();
+		public Dictionary<string, IntPtr> Sliders = new Dictionary<string, IntPtr>();
+		Dictionary<string, int> CurrentValues = new Dictionary<string, int>();
 
-		Dictionary<string, List<Slider>> Categories;
-
-
-
-
-		public BodySlideService(Dictionary<string, List<Slider>> categories)
+		Dictionary<string, List<SliderModel>> _categories;
+		public Dictionary<string, List<SliderModel>> Categories
 		{
-			Categories = categories;
-			FindBodySlide();
+			get { return _categories; }
+			set
+			{
+				if (_categories != value)
+				{
+					_categories = value;
+					FindBodySlide();
+				}
+			}
+		}
+
+
+
+
+		public BodySlideService()
+		{
 		}
 
 
@@ -54,9 +66,13 @@ namespace RmrHelper.Service
 			{
 				return;
 			}
-			var slider = Sliders[sliderName];
-			SendMessage(slider, WM_SETTEXT, 0, value.ToString());
-			PostMessage(slider, WM_KEYDOWN, VK_RETURN, 1);
+			if (!CurrentValues.ContainsKey(sliderName) || CurrentValues[sliderName] != value)
+			{
+				var slider = Sliders[sliderName];
+				SendMessage(slider, WM_SETTEXT, 0, value.ToString());
+				PostMessage(slider, WM_KEYDOWN, VK_RETURN, 1);
+				CurrentValues[sliderName] = value;
+			}
 		}
 
 
@@ -82,14 +98,5 @@ namespace RmrHelper.Service
 		[DllImport("User32.Dll")]
 		public static extern Int32 PostMessage(IntPtr hWnd, int msg, int wParam, int lParam);
 		#endregion
-	}
-
-
-
-
-	public class Slider
-	{
-		public string Name;
-		public string DisplayName;
 	}
 }

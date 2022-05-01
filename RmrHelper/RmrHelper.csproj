@@ -60,8 +60,14 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\ObservableObject.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Model\PresetModel.cs" />
+    <Compile Include="Model\SliderModel.cs" />
     <Compile Include="Service\BodySlideEnumeratorService.cs" />
     <Compile Include="Service\BodySlideService.cs" />
+    <Compile Include="Service\BodyService.cs" />
+    <Compile Include="Service\RmrSettingsService.cs" />
+    <Compile Include="Service\SliderPresetService.cs" />
+    <Compile Include="Model\BodyModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SliderSetViewModel.cs" />
     <Compile Include="ViewModel\TriggerViewModel.cs" />
@@ -111,10 +117,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
-  <ItemGroup>
+    <PackageReference Include="ini-parser">
+      <Version>2.5.2</Version>
+    </PackageReference>
     <PackageReference Include="ModernWpfUI">
       <Version>0.9.4</Version>
     </PackageReference>

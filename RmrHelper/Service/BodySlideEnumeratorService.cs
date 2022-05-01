@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RmrHelper.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -32,7 +33,7 @@ namespace RmrHelper.Service
 
 
 
-		public Dictionary<string, IntPtr> FindSliderInputs(IntPtr sliderScroller, Dictionary<string, List<Slider>> categories)
+		public Dictionary<string, IntPtr> FindSliderInputs(IntPtr sliderScroller, Dictionary<string, List<SliderModel>> categories)
 		{
 			Dictionary<string, IntPtr> results = new Dictionary<string, IntPtr>();
 

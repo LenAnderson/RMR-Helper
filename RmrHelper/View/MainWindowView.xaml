@@ -43,53 +43,49 @@
 		<ui:SimpleStackPanel Grid.Row="1" Orientation="Vertical" Spacing="5" Margin="0 5 0 5">
 			<ui:SimpleStackPanel Orientation="Horizontal">
 				<TextBlock
-					Text="RMR INI"
+					Text="Body"
 					Foreground="{ui:DynamicColor SystemControlForegroundBaseLowBrush}"
 					VerticalAlignment="Center"
 					Margin="5 0 5 0"
-					Width="150"
+					Width="50"
 					/>
-				<Button Content="Browse..." Width="120" Margin="0 0 30 0" Command="{Binding BrowseForRmrIniCommand}" />
+				<ComboBox ItemsSource="{Binding BodyList}" SelectedItem="{Binding SelectedBody}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding FileName}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
 				<TextBlock
-					Text="{Binding RmrIniPath}"
+					Text="sliders identified: "
 					Foreground="{ui:DynamicColor SystemControlForegroundBaseLowBrush}"
 					VerticalAlignment="Center"
 					Margin="5 0 5 0"
 					/>
+				<TextBlock
+					Text="{Binding SelectedBodySliderCount}"
+					Foreground="{ui:DynamicColor SystemControlForegroundBaseLowBrush}"
+					VerticalAlignment="Center"
+					Margin="5 0 5 0"
+					/>
+
 			</ui:SimpleStackPanel>
 
 			<ui:SimpleStackPanel Orientation="Horizontal">
 				<TextBlock
-					Text="SliderCategories XML"
+					Text="Preset"
 					Foreground="{ui:DynamicColor SystemControlForegroundBaseLowBrush}"
 					VerticalAlignment="Center"
 					Margin="5 0 5 0"
-					Width="150"
+					Width="50"
 					/>
-				<Button Content="Browse..." Width="120" Margin="0 0 30 0" Command="{Binding BrowseForSliderCategoriesXmlCommand}" />
-				<TextBlock
-					Text="{Binding SliderCategoriesXmlPath}"
-					Foreground="{ui:DynamicColor SystemControlForegroundBaseLowBrush}"
-					VerticalAlignment="Center"
-					Margin="5 0 5 0"
-					/>
-			</ui:SimpleStackPanel>
-
-			<ui:SimpleStackPanel Orientation="Horizontal">
-				<TextBlock
-					Text="Preset XML"
-					Foreground="{ui:DynamicColor SystemControlForegroundBaseLowBrush}"
-					VerticalAlignment="Center"
-					Margin="5 0 5 0"
-					Width="150"
-					/>
-				<Button Content="Browse..." Width="120" Margin="0 0 30 0" Command="{Binding BrowseForPresetXmlCommand}" />
-				<TextBlock
-					Text="{Binding PresetXmlPath}"
-					Foreground="{ui:DynamicColor SystemControlForegroundBaseLowBrush}"
-					VerticalAlignment="Center"
-					Margin="5 0 5 0"
-					/>
+				<ComboBox ItemsSource="{Binding PresetList}" SelectedItem="{Binding SelectedPreset}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Name}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
 			</ui:SimpleStackPanel>
 		</ui:SimpleStackPanel>
 
@@ -106,7 +102,7 @@
 							<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
 								<TextBlock Width="200" VerticalAlignment="Center" Text="{Binding Name}" />
 								<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding Value}" />
-								<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding Value}" />
+								<Slider VerticalAlignment="Center" Width="440" Minimum="0" Maximum="700" Value="{Binding Value}" />
 							</ui:SimpleStackPanel>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
