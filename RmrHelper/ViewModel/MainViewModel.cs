@@ -53,6 +53,10 @@ namespace RmrHelper.ViewModel
 				{
 					_selectedBody = value;
 					BodySlide.Categories = SelectedBody.SliderCategories;
+					foreach (var sliderSet in SliderSets)
+					{
+						sliderSet.UpdateCategoryList(SelectedBody.SliderCategories);
+					}
 					OnPropertyChanged(nameof(SelectedBody));
 					OnPropertyChanged(nameof(SelectedBodySliderCount));
 				}

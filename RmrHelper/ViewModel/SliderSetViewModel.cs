@@ -1,5 +1,6 @@
 ﻿using ModernWpf.Controls;
 using RmrHelper.Helpers;
+using RmrHelper.Model;
 using RmrHelper.Service;
 using RmrHelper.View;
 using System;
@@ -102,6 +103,14 @@ namespace RmrHelper.ViewModel
 		{
 			_addSliderDialog = new AddSliderView();
 			_addSliderDialogContext = _addSliderDialog.DataContext as AddSliderViewModel;
+		}
+
+
+
+
+		public void UpdateCategoryList(Dictionary<string, List<SliderModel>> categoryList)
+		{
+			_addSliderDialogContext.UpdateCategoryList(categoryList);
 		}
 
 

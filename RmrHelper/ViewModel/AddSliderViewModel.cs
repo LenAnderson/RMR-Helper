@@ -45,5 +45,15 @@ namespace RmrHelper.ViewModel
 
 			public SliderModel Slider { get; set; }
 		}
+
+		internal void UpdateCategoryList(Dictionary<string, List<SliderModel>> categoryList)
+		{
+			CategoryList.Clear();
+			foreach (var kv in categoryList)
+			{
+				var sliders = kv.Value.Select(it => new SliderCheckbox { IsChecked = false, Slider = it }).ToList();
+				CategoryList.Add(new Tuple<string, List<SliderCheckbox>>(kv.Key, sliders));
+			}
+		}
 	}
 }

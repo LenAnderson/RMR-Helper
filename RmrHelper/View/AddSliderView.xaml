@@ -27,29 +27,31 @@
 	</ui:ContentDialog.DataContext>
 
 
+		<ScrollViewer>
 	<ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
-		<ItemsControl ItemsSource="{Binding CategoryList}">
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
-						<TextBlock Text="{Binding Item1}" />
-						<ItemsControl ItemsSource="{Binding Item2}">
-							<ItemsControl.ItemTemplate>
-								<DataTemplate>
-									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-										<CheckBox IsChecked="{Binding IsChecked}">
-											<TextBlock>
+			<ItemsControl ItemsSource="{Binding CategoryList}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
+							<TextBlock Text="{Binding Item1}" />
+							<ItemsControl ItemsSource="{Binding Item2}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+											<CheckBox IsChecked="{Binding IsChecked}">
+												<TextBlock>
 												<Run Text="{Binding Slider.DisplayName}" />
 												<Run Text=" (" /><Run Text="{Binding Slider.Name}" /><Run Text=")" />
-											</TextBlock>
-										</CheckBox>
-									</ui:SimpleStackPanel>
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ItemsControl>
-					</ui:SimpleStackPanel>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
+												</TextBlock>
+											</CheckBox>
+										</ui:SimpleStackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</ui:SimpleStackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 	</ui:SimpleStackPanel>
+		</ScrollViewer>
 </ui:ContentDialog>
