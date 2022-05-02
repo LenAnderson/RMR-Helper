@@ -154,6 +154,19 @@
 									</ComboBox>
 								</ui:SimpleStackPanel>
 								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+									<TextBlock Width="200" VerticalAlignment="Center" Text="Update type" />
+									<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.UpdateTypeList}" SelectedItem="{Binding UpdateType}">
+										<ComboBox.ItemTemplate>
+											<DataTemplate>
+												<TextBlock Text="{Binding}" />
+											</DataTemplate>
+										</ComboBox.ItemTemplate>
+									</ComboBox>
+								</ui:SimpleStackPanel>
+
+								<Separator />
+								
+								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 									<TextBlock Width="200" VerticalAlignment="Center" Text="Target size increase" />
 									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding TargetSizeIncrease}" />
 									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="200" Value="{Binding TargetSizeIncrease}" />
@@ -168,10 +181,70 @@
 									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UpperThreshold}" />
 									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding UpperThreshold}" />
 								</ui:SimpleStackPanel>
+
+								<Separator />
+								
+								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+									<TextBlock Width="200" VerticalAlignment="Center" Text="Armor slots to unequip" />
+									<TextBox Text="{Binding UnequipSlots}" />
+								</ui:SimpleStackPanel>
+								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+									<TextBlock Width="200" VerticalAlignment="Center" Text="Unequip Threshold" />
+									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UnequipThreshold}" />
+									<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="140"  Value="{Binding UnequipThreshold}" />
+								</ui:SimpleStackPanel>
+
+								<Separator />
+
+								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+									<TextBlock Width="200" VerticalAlignment="Center" Text="Apply to companions" />
+									<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.CompanionTypeList}" SelectedItem="{Binding ApplyCompanion}">
+										<ComboBox.ItemTemplate>
+											<DataTemplate>
+												<TextBlock Text="{Binding}" />
+											</DataTemplate>
+										</ComboBox.ItemTemplate>
+									</ComboBox>
+								</ui:SimpleStackPanel>
+
+								<Separator />
+
+								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+									<CheckBox Content="Only doctors can reset morphs" IsChecked="{Binding OnlyDoctorCanReset}" />
+								</ui:SimpleStackPanel>
+								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+									<CheckBox Content="Additive morphing" IsChecked="{Binding IsAdditive}" />
+								</ui:SimpleStackPanel>
+								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+									<CheckBox Content="Limit additive morphing" IsChecked="{Binding HasAdditiveLimit}" />
+								</ui:SimpleStackPanel>
+								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+									<TextBlock Width="200" VerticalAlignment="Center" Text="Additive Morphing Limit" />
+									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding AdditiveLimit}" />
+									<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding HasAdditiveLimit}" Value="{Binding AdditiveLimit}" />
+								</ui:SimpleStackPanel>
 							</ui:SimpleStackPanel>
 						</DataTemplate>
 					</TabControl.ContentTemplate>
 				</TabControl>
+			</TabItem>
+			<TabItem Header="Overrides">
+				<ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
+					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+						<CheckBox Content="Only doctors can reset morphs" IsChecked="{Binding OverrideOnlyDoctorCanReset}" />
+					</ui:SimpleStackPanel>
+					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+						<CheckBox Content="Additive morphing" IsChecked="{Binding OverrideIsAdditive}" />
+					</ui:SimpleStackPanel>
+					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+						<CheckBox Content="Limit additive morphing" IsChecked="{Binding OverrideHasAdditiveLimit}" />
+					</ui:SimpleStackPanel>
+					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+						<TextBlock Width="200" VerticalAlignment="Center" Text="Additive Morphing Limit" />
+						<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding OverrideAdditiveLimit}" />
+						<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding OverrideAdditiveLimit}" Value="{Binding OverrideAdditiveMorphingLimitValue}" />
+					</ui:SimpleStackPanel>
+				</ui:SimpleStackPanel>
 			</TabItem>
 		</TabControl>
 	</Grid>
