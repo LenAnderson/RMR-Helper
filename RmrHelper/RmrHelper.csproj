@@ -68,9 +68,17 @@
     <Compile Include="Service\RmrSettingsService.cs" />
     <Compile Include="Service\SliderPresetService.cs" />
     <Compile Include="Model\BodyModel.cs" />
+    <Compile Include="ViewModel\AddSliderViewModel.cs" />
+    <Compile Include="ViewModel\AddTriggerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SliderSetViewModel.cs" />
     <Compile Include="ViewModel\TriggerViewModel.cs" />
+    <Compile Include="View\AddSliderView.xaml.cs">
+      <DependentUpon>AddSliderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddTriggerView.xaml.cs">
+      <DependentUpon>AddTriggerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
@@ -86,6 +94,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\AddSliderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddTriggerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

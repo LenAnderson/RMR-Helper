@@ -66,7 +66,7 @@ namespace RmrHelper.Service
 			{
 				return;
 			}
-			if (!CurrentValues.ContainsKey(sliderName) || CurrentValues[sliderName] != value)
+			if (Sliders.ContainsKey(sliderName) && (!CurrentValues.ContainsKey(sliderName) || CurrentValues[sliderName] != value))
 			{
 				var slider = Sliders[sliderName];
 				SendMessage(slider, WM_SETTEXT, 0, value.ToString());
@@ -84,6 +84,7 @@ namespace RmrHelper.Service
 		const int WM_KEYDOWN = 0x0100;
 
 		const int VK_RETURN = 0x0D;
+		const int VK_TAB = 0x09;
 
 
 		[DllImport("user32.dll")]

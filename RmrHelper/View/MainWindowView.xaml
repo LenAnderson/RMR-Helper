@@ -19,6 +19,8 @@
 	MinHeight="550"
 	MinWidth="855"
 	ResizeMode="CanResizeWithGrip"
+	
+	x:Name="TheWindow"
 	>
 
 
@@ -91,22 +93,25 @@
 
 		<TabControl Grid.Row="2" Style="{StaticResource TabControlPivotStyle}">
 			<TabItem Header="Triggers">
-				<ItemsControl ItemsSource="{Binding Triggers}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<ui:SimpleStackPanel Orientation="Vertical" Spacing="5" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
-								<TextBlock Width="200" VerticalAlignment="Center" Text="{Binding Name}" />
-								<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding Value}" />
-								<Slider VerticalAlignment="Center" Width="440" Minimum="0" Maximum="700" Value="{Binding Value}" />
-							</ui:SimpleStackPanel>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+				<ui:SimpleStackPanel Orientation="Vertical" Spacing="5">
+					<Button Content="Add Trigger" Command="{Binding AddTriggerCommand}" />
+					<ItemsControl ItemsSource="{Binding Triggers}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<ui:SimpleStackPanel Orientation="Vertical" Spacing="5" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
+									<TextBlock Width="200" VerticalAlignment="Center" Text="{Binding Name}" />
+									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding Value}" />
+									<Slider VerticalAlignment="Center" Width="440" Minimum="0" Maximum="700" Value="{Binding Value}" />
+								</ui:SimpleStackPanel>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ui:SimpleStackPanel>
 			</TabItem>
 			<TabItem Header="Slider Sets">
 				<TabControl Grid.Row="2" TabStripPlacement="Left" ItemsSource="{Binding SliderSets}">
@@ -117,26 +122,48 @@
 					</TabControl.ItemTemplate>
 					<TabControl.ContentTemplate>
 						<DataTemplate>
-							<ui:SimpleStackPanel Orientation="Vertical" Margin="10">
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
+							<ui:SimpleStackPanel Orientation="Vertical" Margin="10" Spacing="10">
+								<Button Content="Add Slider" Command="{Binding AddSliderCommand}" />
+								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="10">
 									<TextBlock Width="200" VerticalAlignment="Center" Text="Slider names" />
+									<ui:ItemsRepeater ItemsSource="{Binding SliderNameList}">
+										<ui:ItemsRepeater.Layout>
+											<ui:StackLayout Orientation="Vertical" Spacing="5" />
+										</ui:ItemsRepeater.Layout>
+										<ui:ItemsRepeater.ItemTemplate>
+											<DataTemplate>
+												<ui:SimpleStackPanel Orientation="Horizontal" Spacing="5">
+													<Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:SimpleStackPanel,AncestorLevel=2}, Path=DataContext.RemoveSliderNameCommand}" CommandParameter="{Binding}">
+														<ui:SymbolIcon Symbol="Delete" VerticalAlignment="Center"/>
+													</Button>
+													<TextBlock Text="{Binding}" VerticalAlignment="Center" MinWidth="100" />
+												</ui:SimpleStackPanel>
+											</DataTemplate>
+										</ui:ItemsRepeater.ItemTemplate>
+									</ui:ItemsRepeater>
 									<TextBlock VerticalAlignment="Center" Text="{Binding SliderNames}" />
 								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
+								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 									<TextBlock Width="200" VerticalAlignment="Center" Text="Trigger name" />
-									<TextBlock VerticalAlignment="Center" Text="{Binding TriggerName}" />
+									<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.TriggerNames}" SelectedItem="{Binding TriggerName}">
+										<ComboBox.ItemTemplate>
+											<DataTemplate>
+												<TextBlock Text="{Binding}" />
+											</DataTemplate>
+										</ComboBox.ItemTemplate>
+									</ComboBox>
 								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
+								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 									<TextBlock Width="200" VerticalAlignment="Center" Text="Target size increase" />
 									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding TargetSizeIncrease}" />
 									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="200" Value="{Binding TargetSizeIncrease}" />
 								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
+								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 									<TextBlock Width="200" VerticalAlignment="Center" Text="Lower threshold" />
 									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding LowerThreshold}" />
 									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding LowerThreshold}" />
 								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
+								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 									<TextBlock Width="200" VerticalAlignment="Center" Text="Upper threshold" />
 									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UpperThreshold}" />
 									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding UpperThreshold}" />

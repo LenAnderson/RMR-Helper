@@ -1,8 +1,10 @@
 ﻿using IniParser;
 using Microsoft.Win32;
+using ModernWpf.Controls;
 using RmrHelper.Helpers;
 using RmrHelper.Model;
 using RmrHelper.Service;
+using RmrHelper.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +13,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using System.Xml.Linq;
 
 namespace RmrHelper.ViewModel
@@ -28,6 +32,9 @@ namespace RmrHelper.ViewModel
 				return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			}
 		}
+
+		private ContentDialog AddTriggerDialog;
+		private AddTriggerViewModel AddTriggerDialogContext;
 
 
 		public string RmrIniPath
@@ -73,6 +80,7 @@ namespace RmrHelper.ViewModel
 
 
 		public ObservableCollection<TriggerViewModel> Triggers { get; set; } = new ObservableCollection<TriggerViewModel>();
+		public ObservableCollection<string> TriggerNames { get; set; } = new ObservableCollection<string>();
 		public ObservableCollection<SliderSetViewModel> SliderSets { get; set; } = new ObservableCollection<SliderSetViewModel>();
 
 
@@ -84,9 +92,9 @@ namespace RmrHelper.ViewModel
 
 		public MainViewModel()
 		{
-			//RmrIniPath = Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini"));
-			//SliderCategoriesXmlPath = Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderCategories", "CBBE.xml"));
-			//PresetXmlPath = Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderPresets", "CBBE.xml"));
+			// prepare dialogs
+			AddTriggerDialog = new AddTriggerView();
+			AddTriggerDialogContext = AddTriggerDialog.DataContext as AddTriggerViewModel;
 
 			// load body types (e.g. CBBE, FusionGirl, BodyTalk...)
 			var bodyService = new BodyService();
@@ -109,6 +117,7 @@ namespace RmrHelper.ViewModel
 			// prepare service to interact with BodySlide application
 			BodySlide = new BodySlideService();
 
+			// load RMR ini (slider sets and overrides)
 			var rmrService = new RmrSettingsService();
 			var sliders = rmrService.LoadRmrSettings(
 				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Config", "LenA_RadMorphing", "settings.ini")),
@@ -122,12 +131,18 @@ namespace RmrHelper.ViewModel
 
 
 			//TODO load triggers (saved in helper, and from ini)
-			Triggers.Add(new TriggerViewModel { Name = "Rads", Value=0 });
-			Triggers.Add(new TriggerViewModel { Name = "HP", Value = 0 });
-			foreach (var trigger in Triggers)
+			foreach (var triggerName in SliderSets.Select(it => it.TriggerName).Where(it=>!string.IsNullOrWhiteSpace(it)).Distinct())
 			{
-				trigger.PropertyChanged += Trigger_PropertyChanged;
+				AddTrigger(triggerName);
 			}
+		}
+
+		void AddTrigger(string name)
+		{
+			var trigger = new TriggerViewModel { Name = name, Value = 0 };
+			Triggers.Add(trigger);
+			TriggerNames.Add(name);
+			trigger.PropertyChanged += Trigger_PropertyChanged;
 		}
 
 		private void Trigger_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -167,6 +182,24 @@ namespace RmrHelper.ViewModel
 
 
 		#region Commands
+		ICommand _addTriggerCommand;
+		public ICommand AddTriggerCommand
+		{
+			get
+			{
+				if (_addTriggerCommand == null)
+				{
+					_addTriggerCommand = new RelayCommand(async(p) =>
+					{
+						if (await AddTriggerDialog.ShowAsync() == ContentDialogResult.Primary)
+						{
+							AddTrigger(AddTriggerDialogContext.Name);
+						}
+					});
+				}
+				return _addTriggerCommand;
+			}
+		}
 		#endregion
 	}
 }
