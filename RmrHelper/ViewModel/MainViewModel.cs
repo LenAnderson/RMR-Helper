@@ -27,7 +27,7 @@ namespace RmrHelper.ViewModel
 			get
 			{
 				#if DEBUG
-				return @"C:\Games\Steam\steamapps\common\Fallout 4\Data\Tools\RmrHelper";
+				return @"E:\Games\Steam\steamapps\common\Fallout 4\Data\Tools\RmrHelper";
 				#endif
 				return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			}
