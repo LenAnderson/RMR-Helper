@@ -33,8 +33,16 @@ namespace RmrHelper.Service
 					TriggerName = section["sTriggerName"],
 					TargetSizeIncrease = (int)float.Parse(section["fTargetMorph"], CultureInfo.InvariantCulture),
 					LowerThreshold = (int)float.Parse(section["fThresholdMin"], CultureInfo.InvariantCulture),
-					UpperThreshold = (int)float.Parse(section["fThresholdMax"], CultureInfo.InvariantCulture)
+					UpperThreshold = (int)float.Parse(section["fThresholdMax"], CultureInfo.InvariantCulture),
+					ArmorSlotsToUnequip = section["sUnequipSlot"],
+					UnequipThreshold = (int)float.Parse(section["fThresholdUnequip"] ??"0", CultureInfo.InvariantCulture),
+					OnlyDoctorCanReset = int.Parse(section["bOnlyDoctorCanReset"] ?? "0") == 1,
+					IsAdditive = int.Parse(section["bIsAdditive"] ?? "0") == 1,
+					HasAdditiveLimit = int.Parse(section["bHasAdditiveLimit"] ?? "0") == 1,
+					AdditiveLimit = (int)float.Parse(section["fAdditiveLimit"] ?? "0", CultureInfo.InvariantCulture)
 				};
+				sliderSet.UpdateType = sliderSet.UpdateTypeList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUpdateType"]));
+				
 				sliderSets.Add(sliderSet);
 			}
 

@@ -106,7 +106,7 @@
 								<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
 									<TextBlock Width="200" VerticalAlignment="Center" Text="{Binding Name}" />
 									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding Value}" />
-									<Slider VerticalAlignment="Center" Width="440" Minimum="0" Maximum="700" Value="{Binding Value}" />
+									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding Value}" />
 								</ui:SimpleStackPanel>
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
@@ -122,108 +122,111 @@
 					</TabControl.ItemTemplate>
 					<TabControl.ContentTemplate>
 						<DataTemplate>
-							<ui:SimpleStackPanel Orientation="Vertical" Margin="10" Spacing="10">
-								<Button Content="Add Slider" Command="{Binding AddSliderCommand}" />
-								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="10">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Slider names" />
-									<ui:ItemsRepeater ItemsSource="{Binding SliderNameList}">
-										<ui:ItemsRepeater.Layout>
-											<ui:StackLayout Orientation="Vertical" Spacing="5" />
-										</ui:ItemsRepeater.Layout>
-										<ui:ItemsRepeater.ItemTemplate>
-											<DataTemplate>
-												<ui:SimpleStackPanel Orientation="Horizontal" Spacing="5">
-													<Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:SimpleStackPanel,AncestorLevel=2}, Path=DataContext.RemoveSliderNameCommand}" CommandParameter="{Binding}">
-														<ui:SymbolIcon Symbol="Delete" VerticalAlignment="Center"/>
-													</Button>
-													<TextBlock Text="{Binding}" VerticalAlignment="Center" MinWidth="100" />
-												</ui:SimpleStackPanel>
-											</DataTemplate>
-										</ui:ItemsRepeater.ItemTemplate>
-									</ui:ItemsRepeater>
-									<TextBlock VerticalAlignment="Center" Text="{Binding SliderNames}" />
-								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Trigger name" />
-									<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.TriggerNames}" SelectedItem="{Binding TriggerName}">
-										<ComboBox.ItemTemplate>
-											<DataTemplate>
-												<TextBlock Text="{Binding}" />
-											</DataTemplate>
-										</ComboBox.ItemTemplate>
-									</ComboBox>
-								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Update type" />
-									<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.UpdateTypeList}" SelectedItem="{Binding UpdateType}">
-										<ComboBox.ItemTemplate>
-											<DataTemplate>
-												<TextBlock Text="{Binding}" />
-											</DataTemplate>
-										</ComboBox.ItemTemplate>
-									</ComboBox>
-								</ui:SimpleStackPanel>
+							<ScrollViewer>
+								<ui:SimpleStackPanel Orientation="Vertical" Margin="10" Spacing="10">
+									<Button Content="Add Slider" Command="{Binding AddSliderCommand}" />
+									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="10">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Slider names" />
+										<ui:ItemsRepeater ItemsSource="{Binding SliderNameList}">
+											<ui:ItemsRepeater.Layout>
+												<ui:StackLayout Orientation="Vertical" Spacing="5" />
+											</ui:ItemsRepeater.Layout>
+											<ui:ItemsRepeater.ItemTemplate>
+												<DataTemplate>
+													<ui:SimpleStackPanel Orientation="Horizontal" Spacing="5">
+														<Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:SimpleStackPanel,AncestorLevel=2}, Path=DataContext.RemoveSliderNameCommand}" CommandParameter="{Binding}">
+															<ui:SymbolIcon Symbol="Delete" VerticalAlignment="Center"/>
+														</Button>
+														<TextBlock Text="{Binding}" VerticalAlignment="Center" MinWidth="100" />
+													</ui:SimpleStackPanel>
+												</DataTemplate>
+											</ui:ItemsRepeater.ItemTemplate>
+										</ui:ItemsRepeater>
+										<TextBlock VerticalAlignment="Center" Text="{Binding SliderNames}" />
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Trigger name" />
+										<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.TriggerNames}" SelectedItem="{Binding TriggerName}">
+											<ComboBox.ItemTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding}" />
+												</DataTemplate>
+											</ComboBox.ItemTemplate>
+										</ComboBox>
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Update type" />
+										<!--<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.UpdateTypeList}" SelectedItem="{Binding UpdateType}">-->
+										<ComboBox ItemsSource="{Binding UpdateTypeList}" SelectedItem="{Binding UpdateType}">
+											<ComboBox.ItemTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Item2}" />
+												</DataTemplate>
+											</ComboBox.ItemTemplate>
+										</ComboBox>
+									</ui:SimpleStackPanel>
 
-								<Separator />
-								
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Target size increase" />
-									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding TargetSizeIncrease}" />
-									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="200" Value="{Binding TargetSizeIncrease}" />
-								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Lower threshold" />
-									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding LowerThreshold}" />
-									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding LowerThreshold}" />
-								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Upper threshold" />
-									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UpperThreshold}" />
-									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding UpperThreshold}" />
-								</ui:SimpleStackPanel>
+									<Separator />
 
-								<Separator />
-								
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Armor slots to unequip" />
-									<TextBox Text="{Binding UnequipSlots}" />
-								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Unequip Threshold" />
-									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UnequipThreshold}" />
-									<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="140"  Value="{Binding UnequipThreshold}" />
-								</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Target size increase" />
+										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding TargetSizeIncrease}" />
+										<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="200" Value="{Binding TargetSizeIncrease}" />
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Lower threshold" />
+										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding LowerThreshold}" />
+										<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding LowerThreshold}" />
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Upper threshold" />
+										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UpperThreshold}" />
+										<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding UpperThreshold}" />
+									</ui:SimpleStackPanel>
 
-								<Separator />
+									<Separator />
 
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Apply to companions" />
-									<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.CompanionTypeList}" SelectedItem="{Binding ApplyCompanion}">
-										<ComboBox.ItemTemplate>
-											<DataTemplate>
-												<TextBlock Text="{Binding}" />
-											</DataTemplate>
-										</ComboBox.ItemTemplate>
-									</ComboBox>
-								</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Armor slots to unequip" />
+										<TextBox Text="{Binding ArmorSlotsToUnequip}" />
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Unequip Threshold" />
+										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UnequipThreshold}" />
+										<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="140"  Value="{Binding UnequipThreshold}" />
+									</ui:SimpleStackPanel>
 
-								<Separator />
+									<Separator />
 
-								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-									<CheckBox Content="Only doctors can reset morphs" IsChecked="{Binding OnlyDoctorCanReset}" />
+									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Apply to companions" />
+										<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.CompanionTypeList}" SelectedItem="{Binding ApplyCompanion}">
+											<ComboBox.ItemTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding}" />
+												</DataTemplate>
+											</ComboBox.ItemTemplate>
+										</ComboBox>
+									</ui:SimpleStackPanel>
+
+									<Separator />
+
+									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+										<CheckBox Content="Only doctors can reset morphs" IsChecked="{Binding OnlyDoctorCanReset}" />
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+										<CheckBox Content="Additive morphing" IsChecked="{Binding IsAdditive}" />
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+										<CheckBox Content="Limit additive morphing" IsChecked="{Binding HasAdditiveLimit}" />
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Additive Morphing Limit" />
+										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding AdditiveLimit}" />
+										<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding HasAdditiveLimit}" Value="{Binding AdditiveLimit}" />
+									</ui:SimpleStackPanel>
 								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-									<CheckBox Content="Additive morphing" IsChecked="{Binding IsAdditive}" />
-								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-									<CheckBox Content="Limit additive morphing" IsChecked="{Binding HasAdditiveLimit}" />
-								</ui:SimpleStackPanel>
-								<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="Additive Morphing Limit" />
-									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding AdditiveLimit}" />
-									<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding HasAdditiveLimit}" Value="{Binding AdditiveLimit}" />
-								</ui:SimpleStackPanel>
-							</ui:SimpleStackPanel>
+							</ScrollViewer>
 						</DataTemplate>
 					</TabControl.ContentTemplate>
 				</TabControl>

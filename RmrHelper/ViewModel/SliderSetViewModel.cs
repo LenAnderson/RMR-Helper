@@ -54,6 +54,26 @@ namespace RmrHelper.ViewModel
 			}
 		}
 
+		public List<Tuple<int, string>> UpdateTypeList { get; set; } = new List<Tuple<int, string>>
+		{
+			new Tuple<int, string>(0, "Periodic"),
+			new Tuple<int, string>(1, "On Sleep"),
+			new Tuple<int, string>(2, "Immediate")
+		};
+		private Tuple<int, string> _updateType;
+		public Tuple<int, string> UpdateType
+		{
+			get { return _updateType; }
+			set
+			{
+				if (_updateType != value)
+				{
+					_updateType = value;
+					OnPropertyChanged(nameof(UpdateType));
+				}
+			}
+		}
+
 		private float _targetSizeIncrease;
 		public int TargetSizeIncrease
 		{
@@ -96,6 +116,90 @@ namespace RmrHelper.ViewModel
 			}
 		}
 
+		private string _armorSlotsToUnequip;
+		public string ArmorSlotsToUnequip
+		{
+			get { return _armorSlotsToUnequip; }
+			set
+			{
+				if (_armorSlotsToUnequip != value)
+				{
+					_armorSlotsToUnequip = value;
+					OnPropertyChanged(nameof(ArmorSlotsToUnequip));
+				}
+			}
+		}
+
+		private int _unequipThreshold;
+		public int UnequipThreshold
+		{
+			get { return _unequipThreshold; }
+			set
+			{
+				if (_unequipThreshold != value)
+				{
+					_unequipThreshold = value;
+					OnPropertyChanged(nameof(UnequipThreshold));
+				}
+			}
+		}
+
+		private bool _onlyDoctorCanReset;
+		public bool OnlyDoctorCanReset
+		{
+			get { return _onlyDoctorCanReset; }
+			set
+			{
+				if (_onlyDoctorCanReset != value)
+				{
+					_onlyDoctorCanReset = value;
+					OnPropertyChanged(nameof(OnlyDoctorCanReset));
+				}
+			}
+		}
+
+		private bool _isAdditive;
+		public bool IsAdditive
+		{
+			get { return _isAdditive;}
+			set
+			{
+				if (_isAdditive != value)
+				{
+					_isAdditive = value;
+					OnPropertyChanged(nameof(IsAdditive));
+				}
+			}
+		}
+
+		private bool _hasAdditiveLimit;
+		public bool HasAdditiveLimit
+		{
+			get { return _hasAdditiveLimit;}
+			set
+			{
+				if (_hasAdditiveLimit != value)
+				{
+					_hasAdditiveLimit = value;
+					OnPropertyChanged(nameof(HasAdditiveLimit));
+				}
+			}
+		}
+
+		private int _additiveLimit;
+		public int AdditiveLimit
+		{
+			get { return _additiveLimit;}
+			set
+			{
+				if (_additiveLimit != value)
+				{
+					_additiveLimit = value;
+					OnPropertyChanged(nameof(AdditiveLimit));
+				}
+			}
+		}
+
 
 
 
@@ -124,7 +228,7 @@ namespace RmrHelper.ViewModel
 			{
 				morph = 0.0f;
 			}
-			else if (trigger > _upperThreshold && false)
+			else if (trigger > _upperThreshold)
 			{
 				morph = 1.0f;
 			}
