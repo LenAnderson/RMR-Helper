@@ -20,6 +20,8 @@ namespace RmrHelper.Service
 				bodyList.Add(new BodyModel { FileName = Path.GetFileName(filePath), SliderCategories = LoadSliderCategories(filePath) });
 			}
 
+			bodyList = bodyList.OrderBy(it => it.FileName.ToLowerInvariant()).ToList();
+
 			return bodyList;
 		}
 

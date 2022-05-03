@@ -20,6 +20,8 @@ namespace RmrHelper.Service
 				presetList.AddRange(LoadPresetFile(filePath));
 			}
 
+			presetList.OrderBy(it => it.Name.ToLowerInvariant()).ToList();
+
 			return presetList;
 		}
 
