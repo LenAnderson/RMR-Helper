@@ -11,19 +11,20 @@ namespace RmrHelper.Service
 {
 	public class RmrSettingsService
 	{
-		public List<SliderSetViewModel> LoadRmrSettings(string defaultsPath, string userPath)
+		public void PopulateRmrSettings(string defaultsPath, string userPath, RmrSettingsViewModel settings)
 		{
-			var sliderSets = new List<SliderSetViewModel>();
-
 			var parser = new FileIniDataParser();
 			var ini = parser.ReadFile(defaultsPath);
 			var userIni = parser.ReadFile(userPath);
 			ini.Merge(userIni);
 
-			var x = ini["Static"]["iNumberOfSliderSets"];
-			int numberOfSliderSets = int.Parse(ini["Static"]["iNumberOfSliderSets"], CultureInfo.InvariantCulture);
+			settings.NumberOfSliderSets = int.Parse(ini["Static"]["iNumberOfSliderSets"], CultureInfo.InvariantCulture);
+			settings.OverrideOnlyDoctorCanReset = int.Parse(ini["Override"]["iOnlyDoctorCanReset"], CultureInfo.InvariantCulture);
+			settings.OverrideIsAdditive = int.Parse(ini["Override"]["iIsAdditive"], CultureInfo.InvariantCulture);
+			settings.OverrideHasAdditiveLimit = int.Parse(ini["Override"]["iHasAdditiveLimit"], CultureInfo.InvariantCulture);
+			settings.OverrideAdditiveLimit = (int)float.Parse(ini["Override"]["fAdditiveLimit"], CultureInfo.InvariantCulture);
 
-			for (int i = 0; i < numberOfSliderSets; i++)
+			for (int i = 0; i < settings.NumberOfSliderSets; i++)
 			{
 				var section = ini[$"Slider{i}"];
 				var sliderSet = new SliderSetViewModel
@@ -43,10 +44,8 @@ namespace RmrHelper.Service
 				};
 				sliderSet.UpdateType = sliderSet.UpdateTypeList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUpdateType"]));
 				
-				sliderSets.Add(sliderSet);
+				settings.AddSliderSet(sliderSet);
 			}
-
-			return sliderSets;
 		}
 	}
 }

@@ -53,7 +53,7 @@ namespace RmrHelper.ViewModel
 				{
 					_selectedBody = value;
 					BodySlide.Categories = SelectedBody.SliderCategories;
-					foreach (var sliderSet in SliderSets)
+					foreach (var sliderSet in RmrSettings.SliderSetList)
 					{
 						sliderSet.UpdateCategoryList(SelectedBody.SliderCategories);
 					}
@@ -82,10 +82,12 @@ namespace RmrHelper.ViewModel
 			}
 		}
 
+		public RmrSettingsViewModel RmrSettings { get; set; } = new RmrSettingsViewModel();
+
 
 		public ObservableCollection<TriggerViewModel> Triggers { get; set; } = new ObservableCollection<TriggerViewModel>();
 		public ObservableCollection<string> TriggerNames { get; set; } = new ObservableCollection<string>();
-		public ObservableCollection<SliderSetViewModel> SliderSets { get; set; } = new ObservableCollection<SliderSetViewModel>();
+		//public ObservableCollection<SliderSetViewModel> SliderSets { get; set; } = new ObservableCollection<SliderSetViewModel>();
 
 
 		BodySlideService BodySlide;
@@ -123,22 +125,30 @@ namespace RmrHelper.ViewModel
 
 			// load RMR ini (slider sets and overrides)
 			var rmrService = new RmrSettingsService();
-			var sliders = rmrService.LoadRmrSettings(
+			rmrService.PopulateRmrSettings(
 				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Config", "LenA_RadMorphing", "settings.ini")),
-				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini"))
+				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini")),
+				RmrSettings
 				);
-			SliderSets.Clear();
-			foreach (var sliderSet in sliders)
-			{
-				SliderSets.Add(sliderSet);
-			}
+			//SliderSets.Clear();
+			//foreach (var sliderSet in sliders)
+			//{
+			//	SliderSets.Add(sliderSet);
+			//}
 
 
 			//TODO load triggers (saved in helper, and from ini)
-			foreach (var triggerName in SliderSets.Select(it => it.TriggerName).Where(it=>!string.IsNullOrWhiteSpace(it)).Distinct())
+			foreach (var triggerName in RmrSettings.SliderSetList.Select(it => it.TriggerName).Where(it=>!string.IsNullOrWhiteSpace(it)).Distinct())
 			{
 				AddTrigger(triggerName);
 			}
+
+			RmrSettings.SettingsChanged += RmrSettings_SettingsChanged;
+		}
+
+		private void RmrSettings_SettingsChanged(object sender, EventArgs e)
+		{
+			ApplyMorphs();
 		}
 
 		void AddTrigger(string name)
@@ -154,6 +164,7 @@ namespace RmrHelper.ViewModel
 			switch (e.PropertyName)
 			{
 				case nameof(TriggerViewModel.Value):
+				case nameof(TriggerViewModel.AdditiveValue):
 					ApplyMorphs();
 					break;
 			}
@@ -164,11 +175,23 @@ namespace RmrHelper.ViewModel
 
 		void ApplyMorphs()
 		{
+			bool? doctor = null;
+			if (RmrSettings.OverrideOnlyDoctorCanReset != 0) doctor = RmrSettings.OverrideOnlyDoctorCanReset == 1;
+			bool? isAdditive = null;
+			if (RmrSettings.OverrideIsAdditive != 0) isAdditive = RmrSettings.OverrideIsAdditive == 1;
+			bool? hasLimit = null;
+			if (RmrSettings.OverrideHasAdditiveLimit != 0) hasLimit = RmrSettings.OverrideHasAdditiveLimit == 1;
+			int? limit = null;
+			if (RmrSettings.OverrideHasAdditiveLimit != 0) limit = RmrSettings.OverrideAdditiveLimit;
 			foreach (var trigger in Triggers)
 			{
-				foreach (var sliderSet in SliderSets.Where(it=>it.TriggerName == trigger.Name))
+				foreach (var sliderSet in RmrSettings.SliderSetList.Where(it=>it.TriggerName == trigger.Name))
 				{
-					var morph = sliderSet.GetMorph(trigger.Value);
+					var morph = sliderSet.GetMorph(
+						trigger.Value,
+						trigger.AdditiveValue,
+						doctor, isAdditive, hasLimit, limit
+						);
 					foreach (var sliderName in sliderSet.SliderNameList)
 					{
 						var original = 0;

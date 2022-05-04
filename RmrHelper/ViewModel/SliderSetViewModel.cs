@@ -56,9 +56,9 @@ namespace RmrHelper.ViewModel
 
 		public List<Tuple<int, string>> UpdateTypeList { get; set; } = new List<Tuple<int, string>>
 		{
-			new Tuple<int, string>(0, "Periodic"),
-			new Tuple<int, string>(1, "On Sleep"),
-			new Tuple<int, string>(2, "Immediate")
+			new Tuple<int, string>(0, "Immediate"),
+			new Tuple<int, string>(1, "Periodic"),
+			new Tuple<int, string>(2, "On Sleep")
 		};
 		private Tuple<int, string> _updateType;
 		public Tuple<int, string> UpdateType
@@ -220,9 +220,26 @@ namespace RmrHelper.ViewModel
 
 
 
-		public int GetMorph(int triggerValue)
+		public int GetMorph(int triggerValue, int additiveValue, bool? onlyDoctorCanReset=null, bool? isAdditive=null, bool? hasAdditiveLimit=null, int? additiveLimit=null)
 		{
 			float trigger = ((float)triggerValue) / 100.0f;
+			float additive = ((float)additiveValue) / 100.0f;
+			float limit = ((float)AdditiveLimit) / 100.0f;
+
+			bool hasLimit = (hasAdditiveLimit.HasValue && hasAdditiveLimit.Value) || (!hasAdditiveLimit.HasValue && HasAdditiveLimit);
+			bool doctor = (onlyDoctorCanReset.HasValue && onlyDoctorCanReset.Value) || (!onlyDoctorCanReset.HasValue && OnlyDoctorCanReset);
+			bool isAdd = (isAdditive.HasValue && isAdditive.Value) || (!isAdditive.HasValue && IsAdditive);
+			limit = additiveLimit.HasValue ? ((float)additiveLimit.Value)/100.0f : limit;
+
+			if (hasLimit)
+			{
+				additive *= limit;
+			}
+			else
+			{
+				additive *= 6.0f;
+			}
+
 			float morph = 0.0f;
 			if (trigger < _lowerThreshold)
 			{
@@ -235,6 +252,10 @@ namespace RmrHelper.ViewModel
 			else
 			{
 				morph = (trigger - _lowerThreshold) / (_upperThreshold - _lowerThreshold);
+			}
+			if (doctor && isAdd)
+			{
+				morph += additive;
 			}
 			return (int)(TargetSizeIncrease * morph);
 		}

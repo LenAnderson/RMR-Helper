@@ -103,10 +103,13 @@
 						</ItemsControl.ItemsPanel>
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
-								<ui:SimpleStackPanel Orientation="Horizontal" Height="40">
-									<TextBlock Width="200" VerticalAlignment="Center" Text="{Binding Name}" />
-									<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding Value}" />
-									<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding Value}" />
+								<ui:SimpleStackPanel Orientation="Horizontal">
+									<TextBlock Width="200" VerticalAlignment="Top" Text="{Binding Name}" />
+									<Slider VerticalAlignment="Top" Width="140" Minimum="0" Maximum="100" Value="{Binding Value}" ui:ControlHelper.Header="Value" />
+									<TextBlock Width="40" VerticalAlignment="Top" Text="{Binding Value}" />
+									<ui:AppBarSeparator />
+									<Slider VerticalAlignment="Top" Width="140" Minimum="0" Maximum="100" Value="{Binding AdditiveValue}" ui:ControlHelper.Header="Additive Value" />
+									<TextBlock Width="40" VerticalAlignment="Top" Text="{Binding AdditiveValue}" />
 								</ui:SimpleStackPanel>
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
@@ -114,7 +117,7 @@
 				</ui:SimpleStackPanel>
 			</TabItem>
 			<TabItem Header="Slider Sets">
-				<TabControl Grid.Row="2" TabStripPlacement="Left" ItemsSource="{Binding SliderSets}">
+				<TabControl Grid.Row="2" TabStripPlacement="Left" ItemsSource="{Binding RmrSettings.SliderSetList}">
 					<TabControl.ItemTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Title}" />
@@ -221,7 +224,7 @@
 										<CheckBox Content="Limit additive morphing" IsChecked="{Binding HasAdditiveLimit}" />
 									</ui:SimpleStackPanel>
 									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-										<TextBlock Width="200" VerticalAlignment="Center" Text="Additive Morphing Limit" />
+										<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
 										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding AdditiveLimit}" />
 										<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding HasAdditiveLimit}" Value="{Binding AdditiveLimit}" />
 									</ui:SimpleStackPanel>
@@ -234,18 +237,36 @@
 			<TabItem Header="Overrides">
 				<ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
 					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-						<CheckBox Content="Only doctors can reset morphs" IsChecked="{Binding OverrideOnlyDoctorCanReset}" />
+						<TextBlock Width="200" VerticalAlignment="Center" Text="Only doctors can reset morphs" />
+						<ComboBox
+							ItemsSource="{Binding RmrSettings.OverrideBool}"
+							SelectedValue="{Binding RmrSettings.OverrideOnlyDoctorCanReset}"
+							SelectedValuePath="Key"
+							DisplayMemberPath="Value"
+							/>
 					</ui:SimpleStackPanel>
 					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-						<CheckBox Content="Additive morphing" IsChecked="{Binding OverrideIsAdditive}" />
+						<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing" />
+						<ComboBox
+							ItemsSource="{Binding RmrSettings.OverrideBool}"
+							SelectedValue="{Binding RmrSettings.OverrideIsAdditive}"
+							SelectedValuePath="Key"
+							DisplayMemberPath="Value"
+							/>
 					</ui:SimpleStackPanel>
 					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-						<CheckBox Content="Limit additive morphing" IsChecked="{Binding OverrideHasAdditiveLimit}" />
+						<TextBlock Width="200" VerticalAlignment="Center" Text="Limit additive morphing" />
+						<ComboBox
+							ItemsSource="{Binding RmrSettings.OverrideBool}"
+							SelectedValue="{Binding RmrSettings.OverrideHasAdditiveLimit}"
+							SelectedValuePath="Key"
+							DisplayMemberPath="Value"
+							/>
 					</ui:SimpleStackPanel>
 					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
-						<TextBlock Width="200" VerticalAlignment="Center" Text="Additive Morphing Limit" />
-						<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding OverrideAdditiveLimit}" />
-						<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding OverrideAdditiveLimit}" Value="{Binding OverrideAdditiveMorphingLimitValue}" />
+						<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
+						<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding RmrSettings.OverrideAdditiveLimit}" />
+						<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding RmrSettings.OverrideAdditiveLimit}" Value="{Binding RmrSettings.OverrideAdditiveLimit}" />
 					</ui:SimpleStackPanel>
 				</ui:SimpleStackPanel>
 			</TabItem>

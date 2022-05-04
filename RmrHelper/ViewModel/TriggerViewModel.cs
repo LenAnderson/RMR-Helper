@@ -37,5 +37,20 @@ namespace RmrHelper.ViewModel
 				}
 			}
 		}
+
+
+		private float _additiveValue;
+		public int AdditiveValue
+		{
+			get { return (int)(_additiveValue * 100); }
+			set
+			{
+				if (_additiveValue != (float)value / 100.0f)
+				{
+					_additiveValue = (float)value / 100.0f;
+					OnPropertyChanged(nameof(AdditiveValue));
+				}
+			}
+		}
 	}
 }

@@ -71,6 +71,7 @@
     <Compile Include="ViewModel\AddSliderViewModel.cs" />
     <Compile Include="ViewModel\AddTriggerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\RmrSettingsViewModel.cs" />
     <Compile Include="ViewModel\SliderSetViewModel.cs" />
     <Compile Include="ViewModel\TriggerViewModel.cs" />
     <Compile Include="View\AddSliderView.xaml.cs">
