@@ -74,43 +74,43 @@ namespace RmrHelper.ViewModel
 			}
 		}
 
-		private float _targetSizeIncrease;
+		private int _targetSizeIncrease;
 		public int TargetSizeIncrease
 		{
-			get { return (int)(100 * _targetSizeIncrease); }
+			get { return _targetSizeIncrease; }
 			set
 			{
-				if (_targetSizeIncrease != (float)value / 100.0f)
+				if (_targetSizeIncrease != value)
 				{
-					_targetSizeIncrease = (float)value / 100.0f;
+					_targetSizeIncrease = value;
 					OnPropertyChanged(nameof(TargetSizeIncrease));
 				}
 			}
 		}
 
-		private float _lowerThreshold;
+		private int _lowerThreshold;
 		public int LowerThreshold
 		{
-			get { return (int)(100 * _lowerThreshold); }
+			get { return _lowerThreshold; }
 			set
 			{
-				if (_lowerThreshold != (float)value / 100.0f)
+				if (_lowerThreshold != value)
 				{
-					_lowerThreshold = (float)value / 100.0f;
+					_lowerThreshold = value;
 					OnPropertyChanged(nameof(LowerThreshold));
 				}
 			}
 		}
 
-		private float _upperThreshold;
+		private int _upperThreshold;
 		public int UpperThreshold
 		{
-			get { return (int)(100 * _upperThreshold); }
+			get { return (int)(_upperThreshold); }
 			set
 			{
-				if (_upperThreshold != (float)value / 100.0f)
+				if (_upperThreshold != value)
 				{
-					_upperThreshold = (float)value / 100.0f;
+					_upperThreshold = value;
 					OnPropertyChanged(nameof(UpperThreshold));
 				}
 			}
@@ -241,17 +241,17 @@ namespace RmrHelper.ViewModel
 			}
 
 			float morph = 0.0f;
-			if (trigger < _lowerThreshold)
+			if (trigger < _lowerThreshold / 100.0f)
 			{
 				morph = 0.0f;
 			}
-			else if (trigger > _upperThreshold)
+			else if (trigger > _upperThreshold / 100.0f)
 			{
 				morph = 1.0f;
 			}
 			else
 			{
-				morph = (trigger - _lowerThreshold) / (_upperThreshold - _lowerThreshold);
+				morph = (trigger - _lowerThreshold / 100.0f) / (_upperThreshold / 100.0f - _lowerThreshold / 100.0f);
 			}
 			if (doctor && isAdd)
 			{
@@ -300,14 +300,19 @@ namespace RmrHelper.ViewModel
 						}
 						if (await _addSliderDialog.ShowAsync() == ContentDialogResult.Primary)
 						{
-							foreach (var category in _addSliderDialogContext.CategoryList)
+							var newSliderNames = _addSliderDialogContext.CategoryList.SelectMany(category => category.Item2.Where(it => it.IsChecked).Select(it => it.Slider.Name)).ToList();
+							foreach (var sliderName in newSliderNames)
 							{
-								foreach (var sliderName in category.Item2.Where(it => it.IsChecked).Select(it => it.Slider.Name))
+								if (!SliderNameList.Contains(sliderName))
 								{
-									if (!SliderNameList.Contains(sliderName))
-									{
-										SliderNameList.Add(sliderName);
-									}
+									SliderNameList.Add(sliderName);
+								}
+							}
+							foreach (var sliderName in SliderNameList.ToList())
+							{
+								if (!newSliderNames.Contains(sliderName))
+								{
+									SliderNameList.Remove(sliderName);
 								}
 							}
 							OnPropertyChanged(nameof(SliderNames));

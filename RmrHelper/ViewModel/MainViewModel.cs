@@ -195,7 +195,7 @@ namespace RmrHelper.ViewModel
 					foreach (var sliderName in sliderSet.SliderNameList)
 					{
 						var original = 0;
-						if (SelectedPreset.Sliders.ContainsKey(sliderName))
+						if (SelectedPreset?.Sliders?.ContainsKey(sliderName) ?? false)
 						{
 							original = SelectedPreset.Sliders[sliderName];
 						}

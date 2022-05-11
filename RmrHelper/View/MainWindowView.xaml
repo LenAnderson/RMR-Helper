@@ -158,6 +158,9 @@
 										</ComboBox>
 									</ui:SimpleStackPanel>
 									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
+										<CheckBox IsChecked="{Binding InvertTriggerValue}" Content="Invert Trigger Value" />
+									</ui:SimpleStackPanel>
+									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Update type" />
 										<!--<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.UpdateTypeList}" SelectedItem="{Binding UpdateType}">-->
 										<ComboBox ItemsSource="{Binding UpdateTypeList}" SelectedItem="{Binding UpdateType}">
@@ -174,17 +177,44 @@
 									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Target size increase" />
 										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding TargetSizeIncrease}" />
-										<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="200" Value="{Binding TargetSizeIncrease}" />
+										<Slider
+											VerticalAlignment="Center"
+											Width="400"
+											Minimum="-200"
+											Maximum="200"
+											TickFrequency="100"
+											TickPlacement="Both"
+											IsMoveToPointEnabled="True"
+											Value="{Binding TargetSizeIncrease}"
+											/>
 									</ui:SimpleStackPanel>
 									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Lower threshold" />
 										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding LowerThreshold}" />
-										<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding LowerThreshold}" />
+										<Slider
+											VerticalAlignment="Center"
+											Width="100"
+											Minimum="0"
+											Maximum="100"
+											TickFrequency="100"
+											TickPlacement="Both"
+											IsMoveToPointEnabled="True"
+											Value="{Binding LowerThreshold}"
+											/>
 									</ui:SimpleStackPanel>
 									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Upper threshold" />
 										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UpperThreshold}" />
-										<Slider VerticalAlignment="Center" Width="140" Minimum="0" Maximum="100" Value="{Binding UpperThreshold}" />
+										<Slider
+											VerticalAlignment="Center"
+											Width="100"
+											Minimum="0"
+											Maximum="100"
+											TickFrequency="100"
+											TickPlacement="Both"
+											IsMoveToPointEnabled="True"
+											Value="{Binding UpperThreshold}"
+											/>
 									</ui:SimpleStackPanel>
 
 									<Separator />
@@ -196,7 +226,16 @@
 									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Unequip Threshold" />
 										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UnequipThreshold}" />
-										<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="140"  Value="{Binding UnequipThreshold}" />
+										<Slider
+											VerticalAlignment="Center"
+											Minimum="0"
+											Maximum="100"
+											Width="100"
+											TickFrequency="100"
+											TickPlacement="Both"
+											IsMoveToPointEnabled="True"
+											Value="{Binding UnequipThreshold}"
+											/>
 									</ui:SimpleStackPanel>
 
 									<Separator />
@@ -226,7 +265,16 @@
 									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
 										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding AdditiveLimit}" />
-										<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding HasAdditiveLimit}" Value="{Binding AdditiveLimit}" />
+										<Slider
+											VerticalAlignment="Center"
+											Minimum="0"
+											Maximum="600"
+											Width="600"
+											TickFrequency="100"
+											TickPlacement="Both"
+											IsMoveToPointEnabled="True"
+											IsEnabled="{Binding HasAdditiveLimit}" Value="{Binding AdditiveLimit}"
+											/>
 									</ui:SimpleStackPanel>
 								</ui:SimpleStackPanel>
 							</ScrollViewer>

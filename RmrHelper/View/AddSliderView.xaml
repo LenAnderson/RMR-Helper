@@ -33,7 +33,8 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
-							<TextBlock Text="{Binding Item1}" />
+							<Separator Margin="75 20 75 0" />
+							<TextBlock Text="{Binding Item1}" FontWeight="Bold" />
 							<ItemsControl ItemsSource="{Binding Item2}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
