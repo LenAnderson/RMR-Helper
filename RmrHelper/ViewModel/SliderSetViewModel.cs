@@ -6,6 +6,7 @@ using RmrHelper.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,22 @@ namespace RmrHelper.ViewModel
 {
 	public class SliderSetViewModel : ObservableObject
 	{
+		#region events
+		public event PropertyChangedEventHandler SliderAdded;
+		public event PropertyChangedEventHandler SliderRemoved;
+		public virtual void OnSliderAdded(string sliderName)
+		{
+			SliderAdded?.Invoke(this, new PropertyChangedEventArgs(sliderName));
+		}
+		public virtual void OnSliderRemoved(string sliderName)
+		{
+			SliderRemoved?.Invoke(this, new PropertyChangedEventArgs(sliderName));
+		}
+		#endregion
+
+
+
+
 		public string Title { get; set; } = "Slider Set #";
 
 		private ContentDialog _addSliderDialog;
@@ -50,6 +67,20 @@ namespace RmrHelper.ViewModel
 				{
 					_triggerName = value;
 					OnPropertyChanged(nameof(TriggerName));
+				}
+			}
+		}
+
+		private bool _invertTriggerValue;
+		public bool InvertTriggerValue
+		{
+			get { return _invertTriggerValue; }
+			set
+			{
+				if (_invertTriggerValue != value)
+				{
+					_invertTriggerValue = value;
+					OnPropertyChanged(nameof(InvertTriggerValue));
 				}
 			}
 		}
@@ -223,6 +254,10 @@ namespace RmrHelper.ViewModel
 		public int GetMorph(int triggerValue, int additiveValue, bool? onlyDoctorCanReset=null, bool? isAdditive=null, bool? hasAdditiveLimit=null, int? additiveLimit=null)
 		{
 			float trigger = ((float)triggerValue) / 100.0f;
+			if (InvertTriggerValue)
+			{
+				trigger = 1.0f - trigger;
+			}
 			float additive = ((float)additiveValue) / 100.0f;
 			float limit = ((float)AdditiveLimit) / 100.0f;
 
@@ -275,7 +310,7 @@ namespace RmrHelper.ViewModel
 					{
 						var sliderName = p.ToString();
 						SliderNameList.Remove(sliderName);
-						OnPropertyChanged(nameof(SliderNames));
+						OnSliderRemoved(sliderName);
 					});
 				}
 				return _removeSliderNameCommand;
@@ -306,6 +341,7 @@ namespace RmrHelper.ViewModel
 								if (!SliderNameList.Contains(sliderName))
 								{
 									SliderNameList.Add(sliderName);
+									OnSliderAdded(sliderName);
 								}
 							}
 							foreach (var sliderName in SliderNameList.ToList())
@@ -313,6 +349,7 @@ namespace RmrHelper.ViewModel
 								if (!newSliderNames.Contains(sliderName))
 								{
 									SliderNameList.Remove(sliderName);
+									OnSliderRemoved(sliderName);
 								}
 							}
 							OnPropertyChanged(nameof(SliderNames));

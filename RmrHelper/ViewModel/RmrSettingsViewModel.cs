@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,18 @@ namespace RmrHelper.ViewModel
 		public virtual void OnSettingsChanged()
 		{
 			SettingsChanged?.Invoke(this, EventArgs.Empty);
+		}
+
+
+		public event PropertyChangedEventHandler SliderAdded;
+		public event PropertyChangedEventHandler SliderRemoved;
+		public virtual void OnSliderAdded(string sliderName)
+		{
+			SliderAdded?.Invoke(this, new PropertyChangedEventArgs(sliderName));
+		}
+		public virtual void OnSliderRemoved(string sliderName)
+		{
+			SliderRemoved?.Invoke(this, new PropertyChangedEventArgs(sliderName));
 		}
 		#endregion
 
@@ -115,6 +128,18 @@ namespace RmrHelper.ViewModel
 		{
 			this.SliderSetList.Add(sliderSet);
 			sliderSet.PropertyChanged += SliderSet_PropertyChanged;
+			sliderSet.SliderAdded += SliderSet_SliderAdded;
+			sliderSet.SliderRemoved += SliderSet_SliderRemoved;
+		}
+
+		private void SliderSet_SliderRemoved(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			OnSliderRemoved(e.PropertyName);
+		}
+
+		private void SliderSet_SliderAdded(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			OnSliderAdded(e.PropertyName);
 		}
 
 		private void SliderSet_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -144,6 +144,24 @@ namespace RmrHelper.ViewModel
 			}
 
 			RmrSettings.SettingsChanged += RmrSettings_SettingsChanged;
+			RmrSettings.SliderAdded += RmrSettings_SliderAdded;
+			RmrSettings.SliderRemoved += RmrSettings_SliderRemoved;
+		}
+
+		private void RmrSettings_SliderRemoved(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			var sliderName = e.PropertyName;
+			var original = 0;
+			if (SelectedPreset?.Sliders?.ContainsKey(sliderName) ?? false)
+			{
+				original = SelectedPreset.Sliders[sliderName];
+			}
+			BodySlide.SetSlider(sliderName, original);
+		}
+
+		private void RmrSettings_SliderAdded(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			ApplyMorphs();
 		}
 
 		private void RmrSettings_SettingsChanged(object sender, EventArgs e)
