@@ -4,6 +4,7 @@ using RmrHelper.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,7 +80,9 @@ namespace RmrHelper.Service
 				ini[$"Slider{i}"]["fAdditiveLimit"] = set.AdditiveLimit.ToString(CultureInfo.InvariantCulture);
 			}
 
-			parser.WriteFile(userPath, ini);
+			Directory.CreateDirectory(Path.GetDirectoryName(bufferPath));
+			parser.WriteFile(bufferPath, ini);
+			File.WriteAllText(userPath, $"\n{File.ReadAllText(bufferPath)}");
 		}
 	}
 }
