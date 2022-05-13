@@ -33,6 +33,7 @@ namespace RmrHelper.Service
 					Title = $"Slider Set {i + 1}",
 					SliderNames = section["sSliderName"],
 					TriggerName = section["sTriggerName"],
+					InvertTriggerValue = int.Parse(section["bInvertTriggerValue"] ?? "0") == 1,
 					TargetSizeIncrease = (int)float.Parse(section["fTargetMorph"], CultureInfo.InvariantCulture),
 					LowerThreshold = (int)float.Parse(section["fThresholdMin"], CultureInfo.InvariantCulture),
 					UpperThreshold = (int)float.Parse(section["fThresholdMax"], CultureInfo.InvariantCulture),
