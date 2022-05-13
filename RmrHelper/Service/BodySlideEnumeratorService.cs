@@ -43,7 +43,7 @@ namespace RmrHelper.Service
 			for (int i = 0; i < SliderCategoryTitles.Count; i++)
 			{
 				var category = SliderCategoryTitles[i];
-				if (categories.ContainsKey(category.Name))
+				if (categories?.ContainsKey(category.Name) ?? false)
 				{
 					var top = category.Top;
 					List<SliderInput> inputs;
