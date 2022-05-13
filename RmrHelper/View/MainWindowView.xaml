@@ -148,9 +148,11 @@
 						<DataTemplate>
 							<ScrollViewer>
 								<ui:SimpleStackPanel Orientation="Vertical" Margin="10" Spacing="10">
-									<Button Content="Add Slider" Command="{Binding AddSliderCommand}" />
 									<ui:SimpleStackPanel Orientation="Horizontal" Spacing="10">
-										<TextBlock Width="200" VerticalAlignment="Center" Text="Slider names" />
+                                        <ui:SimpleStackPanel Orientation="Vertical" Spacing="10" VerticalAlignment="Top">
+                                            <TextBlock Width="200" VerticalAlignment="Center" Text="Slider names" />
+                                            <Button Content="Add Slider" Command="{Binding AddSliderCommand}" />
+                                        </ui:SimpleStackPanel>
 										<ui:ItemsRepeater ItemsSource="{Binding SliderNameList}">
 											<ui:ItemsRepeater.Layout>
 												<ui:StackLayout Orientation="Vertical" Spacing="5" />
