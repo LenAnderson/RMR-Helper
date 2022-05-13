@@ -242,10 +242,10 @@
 
 									<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Apply to companions" />
-										<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.CompanionTypeList}" SelectedItem="{Binding ApplyCompanion}">
+										<ComboBox ItemsSource="{Binding ApplyCompanionList}" SelectedItem="{Binding ApplyCompanion}">
 											<ComboBox.ItemTemplate>
 												<DataTemplate>
-													<TextBlock Text="{Binding}" />
+													<TextBlock Text="{Binding Item2}" />
 												</DataTemplate>
 											</ComboBox.ItemTemplate>
 										</ComboBox>

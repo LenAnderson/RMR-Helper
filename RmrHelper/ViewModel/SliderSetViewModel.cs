@@ -174,6 +174,26 @@ namespace RmrHelper.ViewModel
 				}
 			}
 		}
+		public List<Tuple<int, string>> ApplyCompanionList { get; set; } = new List<Tuple<int, string>>
+		{
+			new Tuple<int, string>(0, "None"),
+			new Tuple<int, string>(1, "Female"),
+			new Tuple<int, string>(2, "Male"),
+			new Tuple<int, string>(3, "All")
+		};
+		private Tuple<int, string> _applyCompanion;
+		public Tuple<int, string> ApplyCompanion
+		{
+			get { return _applyCompanion; }
+			set
+			{
+				if (_applyCompanion != value)
+				{
+					_applyCompanion = value;
+					OnPropertyChanged(nameof(ApplyCompanion));
+				}
+			}
+		}
 
 		private bool _onlyDoctorCanReset;
 		public bool OnlyDoctorCanReset

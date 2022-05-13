@@ -45,6 +45,7 @@ namespace RmrHelper.Service
 					AdditiveLimit = (int)float.Parse(section["fAdditiveLimit"] ?? "0", CultureInfo.InvariantCulture)
 				};
 				sliderSet.UpdateType = sliderSet.UpdateTypeList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUpdateType"]));
+				sliderSet.ApplyCompanion = sliderSet.ApplyCompanionList.FirstOrDefault(it => it.Item1 == int.Parse(section["iApplyCompanion"]));
 				
 				settings.AddSliderSet(sliderSet);
 			}
@@ -71,6 +72,7 @@ namespace RmrHelper.Service
 				ini[$"Slider{i}"]["fThresholdMax"] = set.UpperThreshold.ToString(CultureInfo.InvariantCulture);
 				ini[$"Slider{i}"]["sUnequipSlot"] = set.ArmorSlotsToUnequip;
 				ini[$"Slider{i}"]["fThresholdUnequip"] = set.UnequipThreshold.ToString(CultureInfo.InvariantCulture);
+				ini[$"Slider{i}"]["iApplyCompanion"] = set.ApplyCompanion.Item1.ToString(CultureInfo.InvariantCulture);
 				ini[$"Slider{i}"]["bOnlyDoctorCanReset"] = set.OnlyDoctorCanReset ? "1" : "0";
 				ini[$"Slider{i}"]["bIsAdditive"] = set.IsAdditive ? "1" : "0";
 				ini[$"Slider{i}"]["bHasAdditiveLimit"] = set.HasAdditiveLimit ? "1" : "0";
