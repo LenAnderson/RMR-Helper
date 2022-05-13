@@ -51,14 +51,14 @@ namespace RmrHelper.Service
 			}
 		}
 
-		public void SaveRmrSettings(string userPath, RmrSettingsViewModel settings)
+		public void SaveRmrSettings(string bufferPath, string userPath, RmrSettingsViewModel settings)
         {
 			var parser = new FileIniDataParser();
 			var ini = parser.ReadFile(userPath);
 			ini["Override"]["iOnlyDoctorCanReset"] = settings.OverrideOnlyDoctorCanReset.ToString(CultureInfo.InvariantCulture);
 			ini["Override"]["iIsAdditive"] = settings.OverrideIsAdditive.ToString(CultureInfo.InvariantCulture);
 			ini["Override"]["iHasAdditiveLimit"] = settings.OverrideHasAdditiveLimit.ToString(CultureInfo.InvariantCulture);
-			ini["Override"]["fAdditiveLimit"] = settings.OverrideHasAdditiveLimit.ToString(CultureInfo.InvariantCulture);
+			ini["Override"]["fAdditiveLimit"] = settings.OverrideAdditiveLimit.ToString(CultureInfo.InvariantCulture);
 
             for (int i = 0; i < settings.SliderSetList.Count; i++)
             {
