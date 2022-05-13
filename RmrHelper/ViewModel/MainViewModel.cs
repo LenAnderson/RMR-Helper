@@ -91,6 +91,7 @@ namespace RmrHelper.ViewModel
 
 
 		BodySlideService BodySlide;
+		RmrSettingsService RmrService;
 
 
 
@@ -124,8 +125,8 @@ namespace RmrHelper.ViewModel
 			BodySlide = new BodySlideService();
 
 			// load RMR ini (slider sets and overrides)
-			var rmrService = new RmrSettingsService();
-			rmrService.PopulateRmrSettings(
+			RmrService = new RmrSettingsService();
+			RmrService.PopulateRmrSettings(
 				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Config", "LenA_RadMorphing", "settings.ini")),
 				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini")),
 				RmrSettings
@@ -245,6 +246,22 @@ namespace RmrHelper.ViewModel
 				return _addTriggerCommand;
 			}
 		}
+
+
+		ICommand _saveRmrIniCommand;
+		public ICommand SaveRmrIniCommand
+        {
+            get
+            {
+				if (_saveRmrIniCommand == null)
+                {
+					_saveRmrIniCommand = new RelayCommand(async (p) => {
+						RmrService.SaveRmrSettings(Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini")), RmrSettings);
+					});
+                }
+				return _saveRmrIniCommand;
+            }
+        }
 		#endregion
 	}
 }

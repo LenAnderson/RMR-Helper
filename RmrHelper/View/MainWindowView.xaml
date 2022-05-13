@@ -314,7 +314,7 @@
 					<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
 						<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
 						<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding RmrSettings.OverrideAdditiveLimit}" />
-						<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding RmrSettings.OverrideAdditiveLimit}" Value="{Binding RmrSettings.OverrideAdditiveLimit}" />
+						<Slider VerticalAlignment="Center" Minimum="0" Maximum="600" Width="440" IsEnabled="{Binding RmrSettings.OverrideHasAdditiveLimit}" Value="{Binding RmrSettings.OverrideAdditiveLimit}" />
 					</ui:SimpleStackPanel>
 				</ui:SimpleStackPanel>
 			</TabItem>
