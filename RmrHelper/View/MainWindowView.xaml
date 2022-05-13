@@ -39,7 +39,8 @@
 		</Grid.RowDefinitions>
 
 		<ui:CommandBar Grid.Row="0">
-			<ui:AppBarButton Icon="Save" Label="Save RMR INI" Command="{Binding SaveRmrIniCommand}" />
+            <ui:AppBarButton Icon="Refresh" Label="Reconnect BodySlide" Command="{Binding ConnectBodySlideCommand}" />
+            <ui:AppBarButton Icon="Save" Label="Save RMR INI" Command="{Binding SaveRmrIniCommand}" />
 		</ui:CommandBar>
 
 		<ui:SimpleStackPanel Grid.Row="1" Orientation="Vertical" Spacing="5" Margin="0 5 0 5">
@@ -64,14 +65,14 @@
 					VerticalAlignment="Center"
 					Margin="5 0 5 0"
 					/>
-				<TextBlock
+                <TextBlock
 					Text="{Binding SelectedBodySliderCount}"
 					Foreground="{ui:DynamicColor SystemControlForegroundBaseLowBrush}"
 					VerticalAlignment="Center"
 					Margin="5 0 5 0"
 					/>
 
-			</ui:SimpleStackPanel>
+            </ui:SimpleStackPanel>
 
 			<ui:SimpleStackPanel Orientation="Horizontal">
 				<TextBlock

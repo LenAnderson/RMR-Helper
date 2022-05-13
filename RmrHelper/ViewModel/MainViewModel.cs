@@ -262,6 +262,19 @@ namespace RmrHelper.ViewModel
 				return _saveRmrIniCommand;
             }
         }
+
+		ICommand _connectBodySlideCommand;
+		public ICommand ConnectBodySlideCommand
+        {
+            get
+            {
+				return _connectBodySlideCommand ?? (_connectBodySlideCommand = new RelayCommand(async (p) =>
+				{
+					BodySlide.Categories = SelectedBody?.SliderCategories;
+					OnPropertyChanged(nameof(SelectedBodySliderCount));
+				}));
+            }
+        }
 		#endregion
 	}
 }

@@ -22,11 +22,8 @@ namespace RmrHelper.Service
 			get { return _categories; }
 			set
 			{
-				if (_categories != value)
-				{
-					_categories = value;
-					FindBodySlide();
-				}
+				_categories = value;
+				FindBodySlide();
 			}
 		}
 
