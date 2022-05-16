@@ -127,8 +127,8 @@ namespace RmrHelper.ViewModel
 			// load RMR ini (slider sets and overrides)
 			RmrService = new RmrSettingsService();
 			RmrService.PopulateRmrSettings(
-				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Config", "LenA_RadMorphing", "settings.ini")),
-				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini")),
+				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Config", "RadMorphingRedux", "settings.ini")),
+				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "RadMorphingRedux.ini")),
 				RmrSettings
 				);
 			//SliderSets.Clear();
