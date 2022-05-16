@@ -258,7 +258,7 @@ namespace RmrHelper.ViewModel
 					_saveRmrIniCommand = new RelayCommand(async (p) => {
 						RmrService.SaveRmrSettings(
 							Path.GetFullPath(Path.Combine(AppDir, "buffer.ini")),
-							Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini")),
+							Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "RadMorphingRedux.ini")),
 							RmrSettings
 							);
 					});
