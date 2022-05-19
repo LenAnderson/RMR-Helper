@@ -46,7 +46,7 @@ namespace RmrHelper.Service
 					AdditiveLimit = (int)float.Parse(section["fAdditiveLimit"] ?? "0", CultureInfo.InvariantCulture)
 				};
 				sliderSet.UpdateType = sliderSet.UpdateTypeList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUpdateType"]));
-				sliderSet.ApplyCompanion = sliderSet.ApplyCompanionList.FirstOrDefault(it => it.Item1 == int.Parse(section["iApplyCompanion"]));
+				sliderSet.ApplyCompanion = sliderSet.ApplyCompanionList.FirstOrDefault(it => it.Item1 == int.Parse(section["iApplyCompanion"] ?? "-1"));
 				
 				settings.AddSliderSet(sliderSet);
 			}
