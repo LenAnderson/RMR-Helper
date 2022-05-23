@@ -178,8 +178,8 @@ namespace RmrHelper.ViewModel
 		public List<Tuple<int, string>> ApplyToList { get; set; } = new List<Tuple<int, string>>
 		{
 			new Tuple<int, string>(0, "Player only"),
-			new Tuple<int, string>(1, "Player & Companion"),
-			new Tuple<int, string>(2, "Companion only")
+			new Tuple<int, string>(1, "Companion only"),
+			new Tuple<int, string>(2, "Player & Companion")
 		};
 		private Tuple<int, string> _applyTo;
 		public Tuple<int, string> ApplyTo
