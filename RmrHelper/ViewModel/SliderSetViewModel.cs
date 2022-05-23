@@ -174,26 +174,46 @@ namespace RmrHelper.ViewModel
 				}
 			}
 		}
-		public List<Tuple<int, string>> ApplyCompanionList { get; set; } = new List<Tuple<int, string>>
+
+		public List<Tuple<int, string>> ApplyToList { get; set; } = new List<Tuple<int, string>>
 		{
-			new Tuple<int, string>(0, "None"),
-			new Tuple<int, string>(1, "Female"),
-			new Tuple<int, string>(2, "Male"),
-			new Tuple<int, string>(3, "All")
+			new Tuple<int, string>(0, "Player only"),
+			new Tuple<int, string>(1, "Player & Companion"),
+			new Tuple<int, string>(2, "Companion only")
 		};
-		private Tuple<int, string> _applyCompanion;
-		public Tuple<int, string> ApplyCompanion
+		private Tuple<int, string> _applyTo;
+		public Tuple<int, string> ApplyTo
 		{
-			get { return _applyCompanion; }
+			get { return _applyTo; }
 			set
 			{
-				if (_applyCompanion != value)
+				if (_applyTo != value)
 				{
-					_applyCompanion = value;
-					OnPropertyChanged(nameof(ApplyCompanion));
+					_applyTo = value;
+					OnPropertyChanged(nameof(ApplyTo));
 				}
 			}
 		}
+
+		public List<Tuple<int, string>> SexList { get; set; } = new List<Tuple<int, string>>
+		{
+			new Tuple<int, string>(0, "All"),
+			new Tuple<int, string>(1, "Female"),
+			new Tuple<int, string>(2, "Male")
+		};
+		private Tuple<int, string> _sex;
+		public Tuple<int, string> Sex
+        {
+			get { return _sex; }
+            set
+            {
+				if (_sex != value)
+                {
+					_sex = value;
+					OnPropertyChanged(nameof(Sex));
+                }
+            }
+        }
 
 		private bool _onlyDoctorCanReset;
 		public bool OnlyDoctorCanReset
@@ -312,6 +332,11 @@ namespace RmrHelper.ViewModel
 			{
 				morph += additive;
 			}
+
+			// ( V / (4/3π) )^1/3
+			var dblMorph = Math.Pow(morph / (4d / Math.PI), 1d / 3d);
+			morph = (float)dblMorph;
+
 			return (int)(TargetSizeIncrease * morph);
 		}
 

@@ -46,8 +46,9 @@ namespace RmrHelper.Service
 					AdditiveLimit = (int)float.Parse(section["fAdditiveLimit"] ?? "0", CultureInfo.InvariantCulture)
 				};
 				sliderSet.UpdateType = sliderSet.UpdateTypeList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUpdateType"]));
-				sliderSet.ApplyCompanion = sliderSet.ApplyCompanionList.FirstOrDefault(it => it.Item1 == int.Parse(section["iApplyCompanion"] ?? "-1"));
-				
+				sliderSet.ApplyTo = sliderSet.ApplyToList.FirstOrDefault(it => it.Item1 == int.Parse(section["iApplyTo"] ?? "-1"));
+				sliderSet.Sex = sliderSet.SexList.FirstOrDefault(it => it.Item1 == int.Parse(section["iSex"] ?? "-1"));
+
 				settings.AddSliderSet(sliderSet);
 			}
 		}
@@ -65,6 +66,8 @@ namespace RmrHelper.Service
             {
 				var set = settings.SliderSetList[i];
 				ini[$"Slider{i}"]["sSliderName"] = set.SliderNames;
+				ini[$"Slider{i}"]["iApplyTo"] = set.ApplyTo.Item1.ToString(CultureInfo.InvariantCulture);
+				ini[$"Slider{i}"]["iSex"] = set.Sex.Item1.ToString(CultureInfo.InvariantCulture);
 				ini[$"Slider{i}"]["sTriggerName"] = set.TriggerName;
 				ini[$"Slider{i}"]["bInvertTriggerValue"] = set.InvertTriggerValue ? "1" : "0";
 				ini[$"Slider{i}"]["iUpdateType"] = set.UpdateType.Item1.ToString(CultureInfo.InvariantCulture);
@@ -73,7 +76,6 @@ namespace RmrHelper.Service
 				ini[$"Slider{i}"]["fThresholdMax"] = set.UpperThreshold.ToString(CultureInfo.InvariantCulture);
 				ini[$"Slider{i}"]["sUnequipSlot"] = set.ArmorSlotsToUnequip;
 				ini[$"Slider{i}"]["fThresholdUnequip"] = set.UnequipThreshold.ToString(CultureInfo.InvariantCulture);
-				ini[$"Slider{i}"]["iApplyCompanion"] = set.ApplyCompanion.Item1.ToString(CultureInfo.InvariantCulture);
 				ini[$"Slider{i}"]["bOnlyDoctorCanReset"] = set.OnlyDoctorCanReset ? "1" : "0";
 				ini[$"Slider{i}"]["bIsAdditive"] = set.IsAdditive ? "1" : "0";
 				ini[$"Slider{i}"]["bHasAdditiveLimit"] = set.HasAdditiveLimit ? "1" : "0";
