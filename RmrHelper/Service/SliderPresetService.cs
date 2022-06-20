@@ -14,13 +14,16 @@ namespace RmrHelper.Service
 		public List<PresetModel> LoadPresetList(string dirPath)
 		{
 			var presetList = new List<PresetModel>();
-			var files = Directory.GetFiles(dirPath).Where(it => it.ToLowerInvariant().EndsWith(".xml")).ToList();
-			foreach (var filePath in files)
+			if (Directory.Exists(dirPath))
 			{
-				presetList.AddRange(LoadPresetFile(filePath));
-			}
+				var files = Directory.GetFiles(dirPath).Where(it => it.ToLowerInvariant().EndsWith(".xml")).ToList();
+				foreach (var filePath in files)
+				{
+					presetList.AddRange(LoadPresetFile(filePath));
+				}
 
-			presetList = presetList.OrderBy(it => it.Name.ToLowerInvariant()).ToList();
+				presetList = presetList.OrderBy(it => it.Name.ToLowerInvariant()).ToList();
+			}
 
 			return presetList;
 		}
