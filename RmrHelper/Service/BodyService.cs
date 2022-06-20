@@ -14,13 +14,16 @@ namespace RmrHelper.Service
 		public List<BodyModel> LoadBodyList(string dirPath)
 		{
 			var bodyList = new List<BodyModel>();
-			var files = Directory.GetFiles(dirPath).Where(it => it.ToLowerInvariant().EndsWith(".xml")).ToList();
-			foreach (var filePath in files)
+			if (Directory.Exists(dirPath))
 			{
-				bodyList.Add(new BodyModel { FileName = Path.GetFileName(filePath), SliderCategories = LoadSliderCategories(filePath) });
-			}
+				var files = Directory.GetFiles(dirPath).Where(it => it.ToLowerInvariant().EndsWith(".xml")).ToList();
+				foreach (var filePath in files)
+				{
+					bodyList.Add(new BodyModel { FileName = Path.GetFileName(filePath), SliderCategories = LoadSliderCategories(filePath) });
+				}
 
-			bodyList = bodyList.OrderBy(it => it.FileName.ToLowerInvariant()).ToList();
+				bodyList = bodyList.OrderBy(it => it.FileName.ToLowerInvariant()).ToList();
+			}
 
 			return bodyList;
 		}
