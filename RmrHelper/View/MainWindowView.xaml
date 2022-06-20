@@ -39,6 +39,7 @@
 		</Grid.RowDefinitions>
 
 		<ui:CommandBar Grid.Row="0">
+            <ui:AppBarButton Icon="Switch" Label="Preset-to-Preset" Command="{Binding PresetToPresetCommand}" />
             <ui:AppBarButton Icon="Refresh" Label="Reconnect BodySlide" Command="{Binding ConnectBodySlideCommand}" />
             <ui:AppBarButton Icon="Save" Label="Save RMR INI" Command="{Binding SaveRmrIniCommand}" />
 		</ui:CommandBar>

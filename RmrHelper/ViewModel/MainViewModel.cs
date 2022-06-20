@@ -36,6 +36,9 @@ namespace RmrHelper.ViewModel
 		private ContentDialog AddTriggerDialog;
 		private AddTriggerViewModel AddTriggerDialogContext;
 
+		private ContentDialog PresetToPresetDialog;
+		private PresetToPresetViewModel PresetToPresetDialogContext;
+
 
 		public string RmrIniPath
 		{
@@ -102,6 +105,8 @@ namespace RmrHelper.ViewModel
 			// prepare dialogs
 			AddTriggerDialog = new AddTriggerView();
 			AddTriggerDialogContext = AddTriggerDialog.DataContext as AddTriggerViewModel;
+			PresetToPresetDialog = new PresetToPresetView();
+			PresetToPresetDialogContext = PresetToPresetDialog.DataContext as PresetToPresetViewModel;
 
 			// load body types (e.g. CBBE, FusionGirl, BodyTalk...)
 			var bodyService = new BodyService();
@@ -116,9 +121,11 @@ namespace RmrHelper.ViewModel
 			var presetService = new SliderPresetService();
 			var presets = presetService.LoadPresetList(Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderPresets")));
 			PresetList.Clear();
+			PresetToPresetDialogContext.PresetList.Clear();
 			foreach (var preset in presets)
 			{
 				PresetList.Add(preset);
+				PresetToPresetDialogContext.PresetList.Add(preset);
 			}
 
 			// prepare service to interact with BodySlide application
@@ -175,6 +182,7 @@ namespace RmrHelper.ViewModel
 			var trigger = new TriggerViewModel { Name = name, Value = 0 };
 			Triggers.Add(trigger);
 			TriggerNames.Add(name);
+			PresetToPresetDialogContext.TriggerNameList.Add(name);
 			trigger.PropertyChanged += Trigger_PropertyChanged;
 		}
 
@@ -279,6 +287,68 @@ namespace RmrHelper.ViewModel
 				}));
             }
         }
+
+		ICommand _presetToPresetCommand;
+		public ICommand PresetToPresetCommand
+		{
+			get
+			{
+				return _presetToPresetCommand ?? (_presetToPresetCommand = new RelayCommand(async (p) =>
+				{
+					if (await PresetToPresetDialog.ShowAsync() == ContentDialogResult.Primary && PresetToPresetDialogContext.SelectedPreset != null)
+					{
+						var src = SelectedPreset;
+						var dst = PresetToPresetDialogContext.SelectedPreset;
+
+						var sliders = new Dictionary<string, Tuple<int, int, int>>();
+						foreach (var kv in src.Sliders)
+						{
+							sliders[kv.Key] = new Tuple<int, int, int>(kv.Value, 0, -kv.Value);
+						}
+						foreach (var kv in dst.Sliders)
+						{
+							if (sliders.ContainsKey(kv.Key))
+							{
+								sliders[kv.Key] = new Tuple<int, int, int>(sliders[kv.Key].Item1, kv.Value, kv.Value - sliders[kv.Key].Item1);
+							}
+							else
+							{
+								sliders[kv.Key] = new Tuple<int, int, int>(0, kv.Value, kv.Value);
+							}
+						}
+						
+						var sliderSets = (
+							from kv in sliders
+							where kv.Value.Item3 != 0
+							group kv by kv.Value.Item3 into g
+							select new KeyValuePair<int, List<string>>(g.Key, g.Select(kv=>kv.Key).ToList())
+						).ToList();
+
+						for (int i = 0; i < RmrSettings.SliderSetList.Count; i++)
+						{
+							var sliderSet = RmrSettings.SliderSetList[i];
+							if (i < sliderSets.Count)
+							{
+								sliderSet.TargetSizeIncrease = sliderSets[i].Key;
+								sliderSet.SliderNames = string.Join("|", sliderSets[i].Value);
+
+								sliderSet.TriggerName = PresetToPresetDialogContext.TriggerName;
+								sliderSet.InvertTriggerValue = PresetToPresetDialogContext.InvertTriggerValue;
+								sliderSet.UpdateType = PresetToPresetDialogContext.UpdateType;
+								sliderSet.LowerThreshold = PresetToPresetDialogContext.LowerThreshold;
+								sliderSet.UpperThreshold = PresetToPresetDialogContext.UpperThreshold;
+							}
+							else
+							{
+								sliderSet.SliderNames = "";
+							}
+						}
+
+						//TODO handle when more slider sets are needed than available
+					}
+				}));
+			}
+		}
 		#endregion
 	}
 }
