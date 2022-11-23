@@ -90,7 +90,6 @@ namespace RmrHelper.ViewModel
 
 		public ObservableCollection<TriggerViewModel> Triggers { get; set; } = new ObservableCollection<TriggerViewModel>();
 		public ObservableCollection<string> TriggerNames { get; set; } = new ObservableCollection<string>();
-		//public ObservableCollection<SliderSetViewModel> SliderSets { get; set; } = new ObservableCollection<SliderSetViewModel>();
 
 
 		BodySlideService BodySlide;
@@ -138,11 +137,6 @@ namespace RmrHelper.ViewModel
 				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "RadMorphingRedux.ini")),
 				RmrSettings
 				);
-			//SliderSets.Clear();
-			//foreach (var sliderSet in sliders)
-			//{
-			//	SliderSets.Add(sliderSet);
-			//}
 
 
 			//TODO load triggers (saved in helper, and from ini)
@@ -275,6 +269,63 @@ namespace RmrHelper.ViewModel
             }
         }
 
+		ICommand _saveAsCommand;
+		public ICommand SaveAsCommand
+        {
+            get
+            {
+				if (_saveAsCommand == null)
+                {
+					_saveAsCommand = new RelayCommand(async (p) =>
+					{
+						var dir = Path.GetFullPath(Path.Combine(AppDir, "SavedSettings"));
+						if (!Directory.Exists(dir))
+                        {
+							Directory.CreateDirectory(dir);
+                        }
+						var sfd = new SaveFileDialog();
+						sfd.Filter = "INI file (*.ini)|*.ini";
+						sfd.InitialDirectory = dir;
+						if (sfd.ShowDialog() == true)
+						{
+							RmrService.SaveRmrSettings(
+								Path.GetFullPath(Path.Combine(AppDir, "buffer.ini")),
+								sfd.FileName,
+								RmrSettings
+								);
+						}
+					});
+                }
+				return _saveAsCommand;
+            }
+        }
+
+		ICommand _loadCommand;
+		public ICommand LoadCommand
+        {
+            get
+            {
+				if (_loadCommand == null)
+                {
+					_loadCommand = new RelayCommand(async (p) =>
+					{
+						var ofd = new OpenFileDialog();
+						ofd.Filter = "INI file (*.ini)|*.ini";
+						ofd.InitialDirectory = Path.GetFullPath(Path.Combine(AppDir, "SavedSettings"));
+						if (ofd.ShowDialog() == true)
+                        {
+							RmrService.PopulateRmrSettings(
+								Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Config", "RadMorphingRedux", "settings.ini")),
+								ofd.FileName,
+								RmrSettings
+								);
+                        }
+					});
+                }
+				return _loadCommand;
+            }
+        }
+
 		ICommand _connectBodySlideCommand;
 		public ICommand ConnectBodySlideCommand
         {
@@ -332,6 +383,8 @@ namespace RmrHelper.ViewModel
 								sliderSet.TargetSizeIncrease = sliderSets[i].Key;
 								sliderSet.SliderNames = string.Join("|", sliderSets[i].Value);
 
+								sliderSet.ApplyTo = PresetToPresetDialogContext.ApplyTo;
+								sliderSet.Sex = PresetToPresetDialogContext.Sex;
 								sliderSet.TriggerName = PresetToPresetDialogContext.TriggerName;
 								sliderSet.InvertTriggerValue = PresetToPresetDialogContext.InvertTriggerValue;
 								sliderSet.UpdateType = PresetToPresetDialogContext.UpdateType;
@@ -343,8 +396,25 @@ namespace RmrHelper.ViewModel
 								sliderSet.SliderNames = "";
 							}
 						}
+						if (sliderSets.Count > RmrSettings.SliderSetList.Count)
+                        {
+                            for (int i = RmrSettings.SliderSetList.Count; i < sliderSets.Count; i++)
+                            {
+								var sliderSet = new SliderSetViewModel();
+								sliderSet.Title = $"Slider Set {i+1}";
+								sliderSet.TargetSizeIncrease = sliderSets[i].Key;
+								sliderSet.SliderNames = string.Join("|", sliderSets[i].Value);
 
-						//TODO handle when more slider sets are needed than available
+								sliderSet.ApplyTo = PresetToPresetDialogContext.ApplyTo;
+								sliderSet.Sex = PresetToPresetDialogContext.Sex;
+								sliderSet.TriggerName = PresetToPresetDialogContext.TriggerName;
+								sliderSet.InvertTriggerValue = PresetToPresetDialogContext.InvertTriggerValue;
+								sliderSet.UpdateType = PresetToPresetDialogContext.UpdateType;
+								sliderSet.LowerThreshold = PresetToPresetDialogContext.LowerThreshold;
+								sliderSet.UpperThreshold = PresetToPresetDialogContext.UpperThreshold;
+								RmrSettings.SliderSetList.Add(sliderSet);
+							}
+                        }
 					}
 				}));
 			}

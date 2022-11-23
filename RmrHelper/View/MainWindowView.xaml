@@ -39,10 +39,13 @@
 		</Grid.RowDefinitions>
 
 		<ui:CommandBar Grid.Row="0">
-            <ui:AppBarButton Icon="Switch" Label="Preset-to-Preset" Command="{Binding PresetToPresetCommand}" />
+            <ui:AppBarButton Icon="Switch" Label="Preset-to-Preset ..." Command="{Binding PresetToPresetCommand}" />
             <ui:AppBarButton Icon="Refresh" Label="Reconnect BodySlide" Command="{Binding ConnectBodySlideCommand}" />
             <ui:AppBarButton Icon="Save" Label="Save RMR INI" Command="{Binding SaveRmrIniCommand}" />
-		</ui:CommandBar>
+            <ui:AppBarSeparator />
+            <ui:AppBarButton Icon="SaveLocal" Label="Save as ..." Command="{Binding SaveAsCommand}" />
+            <ui:AppBarButton Icon="OpenFile" Label="Open ..." Command="{Binding LoadCommand}" />
+        </ui:CommandBar>
 
 		<ui:SimpleStackPanel Grid.Row="1" Orientation="Vertical" Spacing="5" Margin="0 5 0 5">
 			<ui:SimpleStackPanel Orientation="Horizontal">
@@ -140,6 +143,35 @@
 			</TabItem>
 			<TabItem Header="Slider Sets">
 				<TabControl Grid.Row="2" TabStripPlacement="Left" ItemsSource="{Binding RmrSettings.SliderSetList}">
+                    <TabControl.Template>
+                        <ControlTemplate TargetType="TabControl">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ScrollViewer
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    VerticalScrollBarVisibility="Auto"
+                                    FlowDirection="RightToLeft"
+                                    Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
+                                    Padding="0 5 5 5"
+                                    >
+                                    <TabPanel
+                                        x:Name="HeaderPanel"
+                                        KeyboardNavigation.TabIndex="0"
+                                        IsItemsHost="True"
+                                        />
+                                </ScrollViewer>
+                                <ContentPresenter
+                                    x:Name="PART_SelectedContentHost"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    ContentSource="SelectedContent"
+                                    Grid.Column="1"
+                                    />
+                            </Grid>
+                        </ControlTemplate>
+                    </TabControl.Template>
 					<TabControl.ItemTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Title}" />

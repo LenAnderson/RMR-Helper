@@ -26,6 +26,46 @@ namespace RmrHelper.ViewModel
 			}
 		}
 
+		public List<Tuple<int, string>> ApplyToList { get; set; } = new List<Tuple<int, string>>
+		{
+			new Tuple<int, string>(0, "Player only"),
+			new Tuple<int, string>(1, "Companion only"),
+			new Tuple<int, string>(2, "Player & Companion")
+		};
+		private Tuple<int, string> _applyTo;
+		public Tuple<int, string> ApplyTo
+		{
+			get { return _applyTo; }
+			set
+			{
+				if (_applyTo != value)
+				{
+					_applyTo = value;
+					OnPropertyChanged(nameof(ApplyTo));
+				}
+			}
+		}
+
+		public List<Tuple<int, string>> SexList { get; set; } = new List<Tuple<int, string>>
+		{
+			new Tuple<int, string>(0, "All"),
+			new Tuple<int, string>(1, "Female"),
+			new Tuple<int, string>(2, "Male")
+		};
+		private Tuple<int, string> _sex;
+		public Tuple<int, string> Sex
+		{
+			get { return _sex; }
+			set
+			{
+				if (_sex != value)
+				{
+					_sex = value;
+					OnPropertyChanged(nameof(Sex));
+				}
+			}
+		}
+
 		public ObservableCollection<string> TriggerNameList { get; set; } = new ObservableCollection<string>();
 		private string _triggerName;
 		public string TriggerName

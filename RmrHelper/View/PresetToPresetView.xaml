@@ -31,6 +31,41 @@
 
 
     <ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
+        <DockPanel Margin="0 15 0 0">
+            <Label DockPanel.Dock="Left" Content="Sliders" Margin="0 0 10 3" FontSize="18" />
+            <Separator />
+        </DockPanel>
+        <ComboBox ItemsSource="{Binding PresetList}" SelectedItem="{Binding SelectedPreset}" ui:ControlHelper.Header="Target Preset">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <DockPanel Margin="0 15 0 0">
+            <Label DockPanel.Dock="Left" Content="Targets" Margin="0 0 10 3" FontSize="18" />
+            <Separator />
+        </DockPanel>
+        <ComboBox ItemsSource="{Binding ApplyToList}" SelectedItem="{Binding ApplyTo}" ui:ControlHelper.Header="Apply To">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Item2}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox ItemsSource="{Binding SexList}" SelectedItem="{Binding Sex}" ui:ControlHelper.Header="Sex">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Item2}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <DockPanel Margin="0 15 0 0">
+            <Label DockPanel.Dock="Left" Content="Trigger" Margin="0 0 10 3" FontSize="18" />
+            <Separator />
+        </DockPanel>
         <ComboBox ItemsSource="{Binding TriggerNameList}" SelectedItem="{Binding TriggerName}" ui:ControlHelper.Header="Trigger">
             <ComboBox.Resources>
             </ComboBox.Resources>
@@ -48,6 +83,11 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
+
+        <DockPanel Margin="0 15 0 0">
+            <Label DockPanel.Dock="Left" Content="Size" Margin="0 0 10 3" FontSize="18" />
+            <Separator />
+        </DockPanel>
         <ui:SimpleStackPanel Orientation="Vertical" HorizontalAlignment="Left">
             <TextBlock Text="Lower threshold" />
             <TextBlock Width="40" VerticalAlignment="Center" Text="{Binding LowerThreshold}" />
@@ -76,13 +116,5 @@
 				Value="{Binding UpperThreshold}"
 				/>
         </ui:SimpleStackPanel>
-        
-        <ComboBox ItemsSource="{Binding BodyList}" SelectedItem="{Binding SelectedBody}" ui:ControlHelper.Header="Target Body">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding FileName}" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
     </ui:SimpleStackPanel>
 </ui:ContentDialog>
