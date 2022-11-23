@@ -44,6 +44,14 @@ namespace RmrHelper.ViewModel
 		{
 			get { return Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "LenA_RadMorphing.ini")); }
 		}
+		public string WindowTitle
+		{
+			get
+			{
+				var ver = Assembly.GetExecutingAssembly().GetName().Version;
+				return $"RMR Helper v{ver.Major}.{ver.Minor}.{ver.Build}";
+			}
+		}
 
 		public ObservableCollection<BodyModel> BodyList { get; set; } = new ObservableCollection<BodyModel>();
 		private BodyModel _selectedBody;

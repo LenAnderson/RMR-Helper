@@ -13,7 +13,7 @@
 	xmlns:ui="http://schemas.modernwpf.com/2019"
 	ui:WindowHelper.UseModernWindowStyle="True"
 	
-	Title="RMR Helper"
+	Title="{Binding WindowTitle}"
 	Height="550"
 	Width="1100"
 	MinHeight="550"
