@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -47,6 +48,7 @@ namespace RmrHelper.Service
 			try
 			{
 				xmlText = File.ReadAllText(filePath);
+				xmlText = Regex.Replace(xmlText, @"(<Slider\s+name=""[^""]+"")(displayname=""[^""]+""\s+/>)", @"$1 $2");
 				var doc = XDocument.Parse(xmlText);
 				foreach (var group in doc.Descendants("Category"))
 				{
