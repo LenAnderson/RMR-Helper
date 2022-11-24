@@ -1,4 +1,5 @@
-﻿using RmrHelper.Model;
+﻿using RmrHelper.Helpers;
+using RmrHelper.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace RmrHelper.Service
 
 		public Dictionary<string, IntPtr> FindSliderInputs(IntPtr sliderScroller, Dictionary<string, List<SliderModel>> categories)
 		{
+			Logger.Log($"BodySlideEnumeratorService.FindSliderInput");
 			Dictionary<string, IntPtr> results = new Dictionary<string, IntPtr>();
 
 			EnumChildWindows(sliderScroller, new EnumWindowsProc(EnumWindowsCallback), IntPtr.Zero);

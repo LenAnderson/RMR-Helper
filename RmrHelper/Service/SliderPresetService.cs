@@ -1,4 +1,5 @@
-﻿using RmrHelper.Model;
+﻿using RmrHelper.Helpers;
+using RmrHelper.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ namespace RmrHelper.Service
 	{
 		public List<PresetModel> LoadPresetList(string dirPath)
 		{
+			Logger.Log($"SliderPresetService.LoadPresetList: {dirPath}");
 			var presetList = new List<PresetModel>();
 			if (Directory.Exists(dirPath))
 			{
@@ -24,6 +26,10 @@ namespace RmrHelper.Service
 
 				presetList = presetList.OrderBy(it => it.Name.ToLowerInvariant()).ToList();
 			}
+            else
+            {
+				Logger.Log($"directory does not exist: {dirPath}", "WARN");
+			}
 
 			return presetList;
 		}
@@ -31,11 +37,13 @@ namespace RmrHelper.Service
 		
 		List<PresetModel> LoadPresetFile(string filePath)
 		{
+			Logger.Log($"SliderPresetService.LoadPresetFile: {filePath}");
 			var presetList = new List<PresetModel>();
 			var doc = XDocument.Load(filePath).Root;
 			foreach (var preset in doc.Descendants("Preset"))
 			{
 				var presetName = preset.Attribute("name").Value;
+				Logger.Log($"preset: {presetName}");
 				var sliders = new Dictionary<string, int>();
 				foreach (var slider in preset.Descendants("SetSlider"))
 				{

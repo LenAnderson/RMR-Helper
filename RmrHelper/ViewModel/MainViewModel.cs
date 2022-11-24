@@ -109,13 +109,18 @@ namespace RmrHelper.ViewModel
 
 		public MainViewModel()
 		{
+			Logger.Clear();
+			Logger.Log("starting RmrHelper");
+
 			// prepare dialogs
+			Logger.Log("preparing dialogs");
 			AddTriggerDialog = new AddTriggerView();
 			AddTriggerDialogContext = AddTriggerDialog.DataContext as AddTriggerViewModel;
 			PresetToPresetDialog = new PresetToPresetView();
 			PresetToPresetDialogContext = PresetToPresetDialog.DataContext as PresetToPresetViewModel;
 
 			// load body types (e.g. CBBE, FusionGirl, BodyTalk...)
+			Logger.Log("loading body types");
 			var bodyService = new BodyService();
 			var bodies = bodyService.LoadBodyList(Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderCategories")));
 			BodyList.Clear();
@@ -125,6 +130,7 @@ namespace RmrHelper.ViewModel
 			}
 
 			// load presets
+			Logger.Log("loading presets");
 			var presetService = new SliderPresetService();
 			var presets = presetService.LoadPresetList(Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderPresets")));
 			PresetList.Clear();
@@ -136,9 +142,11 @@ namespace RmrHelper.ViewModel
 			}
 
 			// prepare service to interact with BodySlide application
+			Logger.Log("preparing BodySlide service");
 			BodySlide = new BodySlideService();
 
 			// load RMR ini (slider sets and overrides)
+			Logger.Log("loading RMR ini");
 			RmrService = new RmrSettingsService();
 			RmrService.PopulateRmrSettings(
 				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Config", "RadMorphingRedux", "settings.ini")),
@@ -148,6 +156,7 @@ namespace RmrHelper.ViewModel
 
 
 			//TODO load triggers (saved in helper, and from ini)
+			Logger.Log("loading triggers");
 			foreach (var triggerName in RmrSettings.SliderSetList.Select(it => it.TriggerName).Where(it=>!string.IsNullOrWhiteSpace(it)).Distinct())
 			{
 				AddTrigger(triggerName);
@@ -181,6 +190,7 @@ namespace RmrHelper.ViewModel
 
 		void AddTrigger(string name)
 		{
+			Logger.Log($"AddTrigger: {name}");
 			var trigger = new TriggerViewModel { Name = name, Value = 0 };
 			Triggers.Add(trigger);
 			TriggerNames.Add(name);
@@ -204,6 +214,7 @@ namespace RmrHelper.ViewModel
 
 		void ApplyMorphs()
 		{
+			Logger.Log($"ApplyMorphs");
 			bool? doctor = null;
 			if (RmrSettings.OverrideOnlyDoctorCanReset != 0) doctor = RmrSettings.OverrideOnlyDoctorCanReset == 1;
 			bool? isAdditive = null;

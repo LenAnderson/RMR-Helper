@@ -1,4 +1,5 @@
-﻿using RmrHelper.Model;
+﻿using RmrHelper.Helpers;
+using RmrHelper.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,15 +48,26 @@ namespace RmrHelper.Service
 
 		void FindBodySlide()
 		{
+			Logger.Log($"BodySlideService.FindBodySlide");
 			BodySlide = FindWindow(null, "BodySlide");
 			if (BodySlide != IntPtr.Zero)
 			{
+				Logger.Log("BodySlide window found");
 				SliderScroller = FindWindowEx(BodySlide, IntPtr.Zero, null, "SliderScrollWindow");
 				if (SliderScroller != IntPtr.Zero)
 				{
+					Logger.Log("SliderScrollWindow found");
 					var helper = new BodySlideEnumeratorService();
 					Sliders = helper.FindSliderInputs(SliderScroller, Categories);
 				}
+                else
+                {
+					Logger.Log("SliderScrollWindow not found", "WARN");
+                }
+			}
+			else
+			{
+				Logger.Log("BodySlide window not found", "WARN");
 			}
 		}
 
@@ -76,6 +88,7 @@ namespace RmrHelper.Service
 		async Task UpdateSliders()
 		{
 			if (Updates.Count == 0 || IsUpdating) return;
+			Logger.Log($"BodySlideService.UpdateSliders ({Updates.Count} updates)");
 			IsUpdating = true;
 			var theUpdates = new Dictionary<string, int>();
 			foreach (var kv in Updates)
@@ -92,16 +105,19 @@ namespace RmrHelper.Service
 		}
 		async Task UpdateSlider(string sliderName, int value)
 		{
+			Logger.Log($"BodySlideService.UpdateSlider: {sliderName}, {value}");
 			if (SliderScroller == IntPtr.Zero)
 			{
 				FindBodySlide();
 			}
 			if (SliderScroller == IntPtr.Zero)
 			{
+				Logger.Log($"could not find BodySlide", "WARN");
 				return;
 			}
 			if (Sliders.ContainsKey(sliderName) && (!CurrentValues.ContainsKey(sliderName) || CurrentValues[sliderName] != value))
 			{
+				Logger.Log("updating BodySlide slider");
 				var slider = Sliders[sliderName];
 				PostMessage(slider, WM_LBUTTONDOWN, 1, MakeLParam(10, 10));
 				await Task.Delay(2);
@@ -110,6 +126,7 @@ namespace RmrHelper.Service
 				await Task.Delay(2);
 				PostMessage(slider, WM_KEYDOWN, VK_TAB, 0);
 				CurrentValues[sliderName] = value;
+				Logger.Log("finished updating BodySlide slider");
 			}
 		}
 

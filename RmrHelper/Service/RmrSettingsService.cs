@@ -1,5 +1,6 @@
 ﻿using IniParser;
 using IniParser.Model;
+using RmrHelper.Helpers;
 using RmrHelper.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace RmrHelper.Service
 	{
 		public void PopulateRmrSettings(string defaultsPath, string userPath, RmrSettingsViewModel settings)
 		{
+			Logger.Log($"RmrSettingsService.PopulateRmrSettings: defaultPath={defaultsPath}; userPath={userPath}");
 			var parser = new FileIniDataParser();
 			if (File.Exists(defaultsPath))
 			{
@@ -79,12 +81,22 @@ namespace RmrHelper.Service
 						sliderSet.HasAdditiveLimit = true;
 						sliderSet.AdditiveLimit = 0;
 					}
+					Logger.Log($"ini loaded with {settings.SliderSetList.Count} slider sets");
 				}
+				else
+				{
+					Logger.Log($"user file does not exist: {userPath}", "WARN");
+				}
+			}
+			else
+			{
+				Logger.Log($"defaults file does not exist: {defaultsPath}", "WARN");
 			}
 		}
 
 		public void SaveRmrSettings(string bufferPath, string userPath, RmrSettingsViewModel settings)
-        {
+		{
+			Logger.Log($"RmrSettingsService.PopulateRmrSettings: bufferPath={bufferPath}; userPath={userPath}");
 			var parser = new FileIniDataParser();
 			IniData ini;
 			if (File.Exists(userPath))
@@ -123,6 +135,7 @@ namespace RmrHelper.Service
 			Directory.CreateDirectory(Path.GetDirectoryName(bufferPath));
 			parser.WriteFile(bufferPath, ini);
 			File.WriteAllText(userPath, $"\n{File.ReadAllText(bufferPath)}");
+			Logger.Log($"ini saved to {userPath}");
 		}
 	}
 }
