@@ -71,6 +71,7 @@
     <Compile Include="Model\BodyModel.cs" />
     <Compile Include="ViewModel\AddSliderViewModel.cs" />
     <Compile Include="ViewModel\AddTriggerViewModel.cs" />
+    <Compile Include="ViewModel\ErrorViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PresetToPresetViewModel.cs" />
     <Compile Include="ViewModel\RmrSettingsViewModel.cs" />
@@ -78,6 +79,9 @@
     <Compile Include="ViewModel\TriggerViewModel.cs" />
     <Compile Include="View\AddSliderView.xaml.cs">
       <DependentUpon>AddSliderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ErrorView.xaml.cs">
+      <DependentUpon>ErrorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PresetToPresetView.xaml.cs">
       <DependentUpon>PresetToPresetView.xaml</DependentUpon>
@@ -103,6 +107,10 @@
     <Page Include="View\AddSliderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ErrorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\PresetToPresetView.xaml">
       <Generator>MSBuild:Compile</Generator>

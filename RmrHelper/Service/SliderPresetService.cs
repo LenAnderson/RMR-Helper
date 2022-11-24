@@ -12,6 +12,8 @@ namespace RmrHelper.Service
 {
 	public class SliderPresetService
 	{
+		public List<string> Errors = new List<string>();
+
 		public List<PresetModel> LoadPresetList(string dirPath)
 		{
 			Logger.Log($"SliderPresetService.LoadPresetList: {dirPath}");
@@ -29,6 +31,7 @@ namespace RmrHelper.Service
             else
             {
 				Logger.Log($"directory does not exist: {dirPath}", "WARN");
+				Errors.Add($"directory does not exist: {dirPath}");
 			}
 
 			return presetList;
@@ -39,20 +42,31 @@ namespace RmrHelper.Service
 		{
 			Logger.Log($"SliderPresetService.LoadPresetFile: {filePath}");
 			var presetList = new List<PresetModel>();
-			var doc = XDocument.Load(filePath).Root;
-			foreach (var preset in doc.Descendants("Preset"))
+			var xmlText = "";
+			try
 			{
-				var presetName = preset.Attribute("name").Value;
-				Logger.Log($"preset: {presetName}");
-				var sliders = new Dictionary<string, int>();
-				foreach (var slider in preset.Descendants("SetSlider"))
+				xmlText = File.ReadAllText(filePath);
+				var doc = XDocument.Parse(xmlText).Root;
+				foreach (var preset in doc.Descendants("Preset"))
 				{
-					var value = slider.Attribute("value").Value;
-					int intValue;
-					int.TryParse(value, out intValue);
-					sliders[slider.Attribute("name").Value] = intValue;
+					var presetName = preset.Attribute("name").Value;
+					Logger.Log($"preset: {presetName}");
+					var sliders = new Dictionary<string, int>();
+					foreach (var slider in preset.Descendants("SetSlider"))
+					{
+						var value = slider.Attribute("value").Value;
+						int intValue;
+						int.TryParse(value, out intValue);
+						sliders[slider.Attribute("name").Value] = intValue;
+					}
+					presetList.Add(new PresetModel { Name = $"[{Path.GetFileName(filePath)}] {presetName}", Sliders = sliders });
 				}
-				presetList.Add(new PresetModel { Name = $"[{Path.GetFileName(filePath)}] {presetName}", Sliders = sliders });
+			}
+			catch (Exception ex)
+			{
+				Errors.Add($"Failed to load {filePath}\n{ex.Message}");
+				Logger.Log(ex);
+				Logger.Log(xmlText, "ERROR");
 			}
 
 			return presetList;

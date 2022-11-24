@@ -39,6 +39,9 @@ namespace RmrHelper.ViewModel
 		private ContentDialog PresetToPresetDialog;
 		private PresetToPresetViewModel PresetToPresetDialogContext;
 
+		private ContentDialog ErrorDialog;
+		private ErrorViewModel ErrorDialogContext;
+
 
 		public string RmrIniPath
 		{
@@ -75,7 +78,7 @@ namespace RmrHelper.ViewModel
 		}
 		public int SelectedBodySliderCount
 		{
-			get { return BodySlide.Sliders.Count; }
+			get { return BodySlide?.Sliders?.Count ?? 0; }
 		}
 
 		public ObservableCollection<PresetModel> PresetList { get; set; } = new ObservableCollection<PresetModel>();
@@ -118,11 +121,28 @@ namespace RmrHelper.ViewModel
 			AddTriggerDialogContext = AddTriggerDialog.DataContext as AddTriggerViewModel;
 			PresetToPresetDialog = new PresetToPresetView();
 			PresetToPresetDialogContext = PresetToPresetDialog.DataContext as PresetToPresetViewModel;
+			ErrorDialog = new ErrorView();
+			ErrorDialogContext = ErrorDialog.DataContext as ErrorViewModel;
 
+			Init();
+		}
+
+		private async void Init()
+        {
 			// load body types (e.g. CBBE, FusionGirl, BodyTalk...)
 			Logger.Log("loading body types");
 			var bodyService = new BodyService();
 			var bodies = bodyService.LoadBodyList(Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderCategories")));
+			if (bodyService.Errors.Count > 0)
+			{
+				ErrorDialogContext.Errors.Clear();
+				foreach (var err in bodyService.Errors)
+				{
+					ErrorDialogContext.Errors.Add(err);
+				}
+				bodyService.Errors.Clear();
+				await ErrorDialog.ShowAsync();
+			}
 			BodyList.Clear();
 			foreach (var body in bodies)
 			{
@@ -133,6 +153,16 @@ namespace RmrHelper.ViewModel
 			Logger.Log("loading presets");
 			var presetService = new SliderPresetService();
 			var presets = presetService.LoadPresetList(Path.GetFullPath(Path.Combine(AppDir, "..", "BodySlide", "SliderPresets")));
+			if (presetService.Errors.Count > 0)
+			{
+				ErrorDialogContext.Errors.Clear();
+				foreach(var err in presetService.Errors)
+                {
+					ErrorDialogContext.Errors.Add(err);
+                }
+				presetService.Errors.Clear();
+				await ErrorDialog.ShowAsync();
+			}
 			PresetList.Clear();
 			PresetToPresetDialogContext.PresetList.Clear();
 			foreach (var preset in presets)
@@ -153,11 +183,21 @@ namespace RmrHelper.ViewModel
 				Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "RadMorphingRedux.ini")),
 				RmrSettings
 				);
+			if (RmrService.Errors.Count > 0)
+            {
+				ErrorDialogContext.Errors.Clear();
+				foreach(string err in RmrService.Errors)
+                {
+					ErrorDialogContext.Errors.Add(err);
+                }
+				RmrService.Errors.Clear();
+				await ErrorDialog.ShowAsync();
+            }
 
 
 			//TODO load triggers (saved in helper, and from ini)
 			Logger.Log("loading triggers");
-			foreach (var triggerName in RmrSettings.SliderSetList.Select(it => it.TriggerName).Where(it=>!string.IsNullOrWhiteSpace(it)).Distinct())
+			foreach (var triggerName in RmrSettings.SliderSetList.Select(it => it.TriggerName).Where(it => !string.IsNullOrWhiteSpace(it)).Distinct())
 			{
 				AddTrigger(triggerName);
 			}
@@ -282,6 +322,16 @@ namespace RmrHelper.ViewModel
 							Path.GetFullPath(Path.Combine(AppDir, "..", "..", "MCM", "Settings", "RadMorphingRedux.ini")),
 							RmrSettings
 							);
+						if (RmrService.Errors.Count > 0)
+						{
+							ErrorDialogContext.Errors.Clear();
+							foreach (string err in RmrService.Errors)
+							{
+								ErrorDialogContext.Errors.Add(err);
+							}
+							RmrService.Errors.Clear();
+							await ErrorDialog.ShowAsync();
+						}
 					});
                 }
 				return _saveRmrIniCommand;
@@ -312,6 +362,16 @@ namespace RmrHelper.ViewModel
 								sfd.FileName,
 								RmrSettings
 								);
+							if (RmrService.Errors.Count > 0)
+							{
+								ErrorDialogContext.Errors.Clear();
+								foreach (string err in RmrService.Errors)
+								{
+									ErrorDialogContext.Errors.Add(err);
+								}
+								RmrService.Errors.Clear();
+								await ErrorDialog.ShowAsync();
+							}
 						}
 					});
                 }
@@ -338,7 +398,17 @@ namespace RmrHelper.ViewModel
 								ofd.FileName,
 								RmrSettings
 								);
-                        }
+							if (RmrService.Errors.Count > 0)
+							{
+								ErrorDialogContext.Errors.Clear();
+								foreach (string err in RmrService.Errors)
+								{
+									ErrorDialogContext.Errors.Add(err);
+								}
+								RmrService.Errors.Clear();
+								await ErrorDialog.ShowAsync();
+							}
+						}
 					});
                 }
 				return _loadCommand;
