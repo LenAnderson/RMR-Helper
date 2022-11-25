@@ -115,18 +115,21 @@ namespace RmrHelper.Service
 				Logger.Log($"could not find BodySlide", "WARN");
 				return;
 			}
-			if (Sliders.ContainsKey(sliderName) && (!CurrentValues.ContainsKey(sliderName) || CurrentValues[sliderName] != value))
+			if (Sliders.ContainsKey(sliderName))
 			{
-				Logger.Log("updating BodySlide slider");
-				var slider = Sliders[sliderName];
-				PostMessage(slider, WM_LBUTTONDOWN, 1, MakeLParam(10, 10));
-				await Task.Delay(2);
-				PostMessage(slider, WM_LBUTTONUP, 0, MakeLParam(10, 10));
-				SendMessage(slider, WM_SETTEXT, 0, value.ToString());
-				await Task.Delay(2);
-				PostMessage(slider, WM_KEYDOWN, VK_TAB, 0);
-				CurrentValues[sliderName] = value;
-				Logger.Log("finished updating BodySlide slider");
+				if (!CurrentValues.ContainsKey(sliderName) || CurrentValues[sliderName] != value)
+				{
+					Logger.Log("updating BodySlide slider");
+					var slider = Sliders[sliderName];
+					PostMessage(slider, WM_LBUTTONDOWN, 1, MakeLParam(10, 10));
+					await Task.Delay(2);
+					PostMessage(slider, WM_LBUTTONUP, 0, MakeLParam(10, 10));
+					SendMessage(slider, WM_SETTEXT, 0, value.ToString());
+					await Task.Delay(2);
+					PostMessage(slider, WM_KEYDOWN, VK_TAB, 0);
+					CurrentValues[sliderName] = value;
+					Logger.Log("finished updating BodySlide slider");
+				}
 			}
             else
             {
