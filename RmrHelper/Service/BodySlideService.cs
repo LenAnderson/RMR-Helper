@@ -128,6 +128,10 @@ namespace RmrHelper.Service
 				CurrentValues[sliderName] = value;
 				Logger.Log("finished updating BodySlide slider");
 			}
+            else
+            {
+				Logger.Log($"BodySlide slider not found: {sliderName}", "WARN");
+            }
 		}
 
 

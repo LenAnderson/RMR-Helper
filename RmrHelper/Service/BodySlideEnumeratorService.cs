@@ -36,17 +36,22 @@ namespace RmrHelper.Service
 
 		public Dictionary<string, IntPtr> FindSliderInputs(IntPtr sliderScroller, Dictionary<string, List<SliderModel>> categories)
 		{
-			Logger.Log($"BodySlideEnumeratorService.FindSliderInput");
+			Logger.Log($"BodySlideEnumeratorService.FindSliderInputs");
 			Dictionary<string, IntPtr> results = new Dictionary<string, IntPtr>();
 
 			EnumChildWindows(sliderScroller, new EnumWindowsProc(EnumWindowsCallback), IntPtr.Zero);
+
+			List<string> foundCategories = new List<string>();
 
 			SliderCategoryTitles = SliderCategoryTitles.OrderBy(it => it.Top).ToList();
 			for (int i = 0; i < SliderCategoryTitles.Count; i++)
 			{
 				var category = SliderCategoryTitles[i];
+				Logger.Log($"found BodySlide category: {category.Name}");
 				if (categories?.ContainsKey(category.Name) ?? false)
 				{
+					Logger.Log("  is in XML categories");
+					foundCategories.Add(category.Name);
 					var top = category.Top;
 					List<SliderInput> inputs;
 					if (i+1 < SliderCategoryTitles.Count)
@@ -58,16 +63,34 @@ namespace RmrHelper.Service
 					{
 						inputs = SliderInputs.Where(it => it.Top > top).ToList();
 					}
+					Logger.Log($"  BodySlide inputs: {string.Join("; ", inputs.Select(it => it.Name))}");
 
 					foreach (var slider in categories[category.Name])
 					{
 						if (inputs.Any(it => it.Name == slider.DisplayName))
 						{
+							Logger.Log($"  found matching BodySlide input for: {slider.DisplayName} ({slider.Name})");
 							results[slider.Name] = inputs.First(it => it.Name == slider.DisplayName).Handle;
+						}
+                        else
+						{
+							Logger.Log($"  found no matching BodySlide input for: {slider.DisplayName} ({slider.Name})", "WARN");
 						}
 					}
 				}
+                else
+                {
+					Logger.Log("  not in categories", "WARN");
+                }
 			}
+			if (foundCategories.Count < categories.Count)
+            {
+				var missing = categories.Keys.Where(it => !foundCategories.Contains(it));
+				foreach (var category in missing)
+                {
+					Logger.Log($"XML category missing in BodySlide: {category}", "WARN");
+                }
+            }
 
 			return results;
 		}
