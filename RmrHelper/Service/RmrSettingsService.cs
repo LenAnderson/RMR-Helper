@@ -121,6 +121,8 @@ namespace RmrHelper.Service
 				{
 					ini = new IniData();
 				}
+				var now = DateTime.Now;
+				ini["Internal"]["sModified"] = DateTime.Now.ToString("yyyyMMddHHmmss");
 				ini["Override"]["iOnlyDoctorCanReset"] = settings.OverrideOnlyDoctorCanReset.ToString(CultureInfo.InvariantCulture);
 				ini["Override"]["iIsAdditive"] = settings.OverrideIsAdditive.ToString(CultureInfo.InvariantCulture);
 				ini["Override"]["iHasAdditiveLimit"] = settings.OverrideHasAdditiveLimit.ToString(CultureInfo.InvariantCulture);
