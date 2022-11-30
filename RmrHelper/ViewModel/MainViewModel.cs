@@ -255,6 +255,9 @@ namespace RmrHelper.ViewModel
 		void ApplyMorphs()
 		{
 			Logger.Log($"ApplyMorphs");
+			
+			Dictionary<string, int> sliders = new Dictionary<string, int>();
+
 			bool? doctor = null;
 			if (RmrSettings.OverrideOnlyDoctorCanReset != 0) doctor = RmrSettings.OverrideOnlyDoctorCanReset == 1;
 			bool? isAdditive = null;
@@ -274,14 +277,22 @@ namespace RmrHelper.ViewModel
 						);
 					foreach (var sliderName in sliderSet.SliderNameList)
 					{
-						var original = 0;
-						if (SelectedPreset?.Sliders?.ContainsKey(sliderName) ?? false)
+						if (!sliders.ContainsKey(sliderName))
 						{
-							original = SelectedPreset.Sliders[sliderName];
+							var original = 0;
+							if (SelectedPreset?.Sliders?.ContainsKey(sliderName) ?? false)
+							{
+								original = SelectedPreset.Sliders[sliderName];
+							}
+							sliders[sliderName] = original;
 						}
-						BodySlide.SetSlider(sliderName, original + morph);
+						sliders[sliderName] += morph;
 					}
 				}
+			}
+            foreach (var item in sliders)
+            {
+				BodySlide.SetSlider(item.Key, item.Value);
 			}
 		}
 
