@@ -337,6 +337,30 @@
 											Value="{Binding UnequipThreshold}"
 											/>
                                     </ui:SimpleStackPanel>
+                                    <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
+                                        <TextBlock Width="200" VerticalAlignment="Center" Text="Unequip action" />
+                                        <ComboBox ItemsSource="{Binding UnequipActionList}" SelectedItem="{Binding UnequipAction}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Item2}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </ui:SimpleStackPanel>
+                                    <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
+                                        <TextBlock Width="200" VerticalAlignment="Center" Text="Drop Chance" />
+                                        <TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UnequipDropChance}" />
+                                        <Slider
+											VerticalAlignment="Center"
+											Minimum="0"
+											Maximum="100"
+											Width="100"
+											TickFrequency="100"
+											TickPlacement="Both"
+											IsMoveToPointEnabled="True"
+											Value="{Binding UnequipDropChance}"
+											/>
+                                    </ui:SimpleStackPanel>
 
                                     <DockPanel Margin="0 15 0 0">
                                         <Label DockPanel.Dock="Left" Content="Permanent Morphs" Margin="0 0 10 3" FontSize="18" />
@@ -373,57 +397,92 @@
 				</TabControl>
 			</TabItem>
 			<TabItem Header="Overrides">
-                <ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
+                <ScrollViewer>
+					<ui:SimpleStackPanel Orientation="Vertical" Spacing="12">
 
-                    <DockPanel Margin="0 15 0 0">
-                        <Label DockPanel.Dock="Left" Content="Permanent Morphs" Margin="0 0 10 3" FontSize="18" />
-                        <Separator />
-                    </DockPanel>
+						<DockPanel Margin="0 15 0 0">
+							<Label DockPanel.Dock="Left" Content="Permanent Morphs" Margin="0 0 10 3" FontSize="18" />
+							<Separator />
+						</DockPanel>
                     
-                    <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
-						<TextBlock Width="200" VerticalAlignment="Center" Text="Only doctors can reset morphs" />
-						<ComboBox
-							ItemsSource="{Binding RmrSettings.OverrideBool}"
-							SelectedValue="{Binding RmrSettings.OverrideOnlyDoctorCanReset}"
-							SelectedValuePath="Key"
-							DisplayMemberPath="Value"
-							/>
+						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
+							<TextBlock Width="200" VerticalAlignment="Center" Text="Only doctors can reset morphs" />
+							<ComboBox
+								ItemsSource="{Binding RmrSettings.OverrideBool}"
+								SelectedValue="{Binding RmrSettings.OverrideOnlyDoctorCanReset}"
+								SelectedValuePath="Key"
+								DisplayMemberPath="Value"
+								/>
+						</ui:SimpleStackPanel>
+						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
+							<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing" />
+							<ComboBox
+								ItemsSource="{Binding RmrSettings.OverrideBool}"
+								SelectedValue="{Binding RmrSettings.OverrideIsAdditive}"
+								SelectedValuePath="Key"
+								DisplayMemberPath="Value"
+								/>
+						</ui:SimpleStackPanel>
+						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
+							<TextBlock Width="200" VerticalAlignment="Center" Text="Limit additive morphing" />
+							<ComboBox
+								ItemsSource="{Binding RmrSettings.OverrideBool}"
+								SelectedValue="{Binding RmrSettings.OverrideHasAdditiveLimit}"
+								SelectedValuePath="Key"
+								DisplayMemberPath="Value"
+								/>
+						</ui:SimpleStackPanel>
+						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
+							<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
+							<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding RmrSettings.OverrideAdditiveLimit}" />
+							<Slider
+								VerticalAlignment="Center"
+								Minimum="0"
+								Maximum="600"
+								Width="600"
+								TickFrequency="100"
+								TickPlacement="Both"
+								IsMoveToPointEnabled="True"
+								IsEnabled="{Binding RmrSettings.OverrideHasAdditiveLimit}"
+								Value="{Binding RmrSettings.OverrideAdditiveLimit}"
+								/>
+						</ui:SimpleStackPanel>
+
+						<DockPanel Margin="0 15 0 0">
+							<Label DockPanel.Dock="Left" Content="Unequipping" Margin="0 0 10 3" FontSize="18" />
+							<Separator />
+						</DockPanel>
+                    
+						<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
+							<TextBlock Width="200" VerticalAlignment="Center" Text="Unequip action" />
+							<ComboBox ItemsSource="{Binding RmrSettings.OverrideUnequipActionList}" SelectedItem="{Binding RmrSettings.OverrideUnequipAction}">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Item2}" />
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+						</ui:SimpleStackPanel>
+						<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
+							<CheckBox IsChecked="{Binding RmrSettings.OverrideUnequipDropChance}" Content="Override Drop Chance" />
+						</ui:SimpleStackPanel>
+						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
+							<TextBlock Width="200" VerticalAlignment="Center" Text="Drop Chance" />
+							<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding RmrSettings.OverrideUnequipDropChanceValue}" />
+							<Slider
+								VerticalAlignment="Center"
+								Minimum="0"
+								Maximum="100"
+								Width="100"
+								TickFrequency="100"
+								TickPlacement="Both"
+								IsMoveToPointEnabled="True"
+								Value="{Binding RmrSettings.OverrideUnequipDropChanceValue}"
+								/>
+						</ui:SimpleStackPanel>
 					</ui:SimpleStackPanel>
-                    <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
-						<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing" />
-						<ComboBox
-							ItemsSource="{Binding RmrSettings.OverrideBool}"
-							SelectedValue="{Binding RmrSettings.OverrideIsAdditive}"
-							SelectedValuePath="Key"
-							DisplayMemberPath="Value"
-							/>
-					</ui:SimpleStackPanel>
-                    <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
-						<TextBlock Width="200" VerticalAlignment="Center" Text="Limit additive morphing" />
-						<ComboBox
-							ItemsSource="{Binding RmrSettings.OverrideBool}"
-							SelectedValue="{Binding RmrSettings.OverrideHasAdditiveLimit}"
-							SelectedValuePath="Key"
-							DisplayMemberPath="Value"
-							/>
-					</ui:SimpleStackPanel>
-                    <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
-						<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
-						<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding RmrSettings.OverrideAdditiveLimit}" />
-						<Slider
-                            VerticalAlignment="Center"
-                            Minimum="0"
-                            Maximum="600"
-                            Width="600"
-							TickFrequency="100"
-							TickPlacement="Both"
-							IsMoveToPointEnabled="True"
-                            IsEnabled="{Binding RmrSettings.OverrideHasAdditiveLimit}"
-                            Value="{Binding RmrSettings.OverrideAdditiveLimit}"
-                            />
-					</ui:SimpleStackPanel>
-				</ui:SimpleStackPanel>
-			</TabItem>
+                </ScrollViewer>
+            </TabItem>
 		</TabControl>
 	</Grid>
 </Window>

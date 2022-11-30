@@ -35,6 +35,9 @@ namespace RmrHelper.Service
 						settings.OverrideIsAdditive = int.Parse(ini["Override"]["iIsAdditive"], CultureInfo.InvariantCulture);
 						settings.OverrideHasAdditiveLimit = int.Parse(ini["Override"]["iHasAdditiveLimit"], CultureInfo.InvariantCulture);
 						settings.OverrideAdditiveLimit = (int)float.Parse(ini["Override"]["fAdditiveLimit"], CultureInfo.InvariantCulture);
+						settings.OverrideUnequipAction = settings.OverrideUnequipActionList.FirstOrDefault(it=>it.Item1==int.Parse(ini["Override"]["iUnequipAction"] ?? "-1", CultureInfo.InvariantCulture));
+						settings.OverrideUnequipDropChance = int.Parse(ini["Override"]["bOverrideUnequipDropChance"] ?? "0") == 1;
+						settings.OverrideUnequipDropChanceValue = (int)float.Parse(ini["Override"]["fUnequipDropChance"] ?? "0.0", CultureInfo.InvariantCulture);
 
 						for (int i = 0; i < settings.NumberOfSliderSets; i++)
 						{
@@ -58,6 +61,7 @@ namespace RmrHelper.Service
 							sliderSet.UpperThreshold = (int)float.Parse(section["fThresholdMax"], CultureInfo.InvariantCulture);
 							sliderSet.ArmorSlotsToUnequip = section["sUnequipSlot"];
 							sliderSet.UnequipThreshold = (int)float.Parse(section["fThresholdUnequip"] ?? "0", CultureInfo.InvariantCulture);
+							sliderSet.UnequipDropChance = (int)float.Parse(section["fUnequipDropChance"] ?? "0", CultureInfo.InvariantCulture);
 							sliderSet.OnlyDoctorCanReset = int.Parse(section["bOnlyDoctorCanReset"] ?? "0") == 1;
 							sliderSet.IsAdditive = int.Parse(section["bIsAdditive"] ?? "0") == 1;
 							sliderSet.HasAdditiveLimit = int.Parse(section["bHasAdditiveLimit"] ?? "0") == 1;
@@ -68,6 +72,7 @@ namespace RmrHelper.Service
 							}
 							sliderSet.UpdateType = sliderSet.UpdateTypeList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUpdateType"]));
 							sliderSet.ApplyTo = sliderSet.ApplyToList.FirstOrDefault(it => it.Item1 == int.Parse(section["iApplyTo"] ?? "-1"));
+							sliderSet.UnequipAction = sliderSet.UnequipActionList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUnequipAction"] ?? "-1"));
 							sliderSet.Sex = sliderSet.SexList.FirstOrDefault(it => it.Item1 == int.Parse(section["iSex"] ?? "-1"));
 						}
 						for (int i = settings.NumberOfSliderSets; i < settings.SliderSetList.Count; i++)
@@ -127,6 +132,9 @@ namespace RmrHelper.Service
 				ini["Override"]["iIsAdditive"] = settings.OverrideIsAdditive.ToString(CultureInfo.InvariantCulture);
 				ini["Override"]["iHasAdditiveLimit"] = settings.OverrideHasAdditiveLimit.ToString(CultureInfo.InvariantCulture);
 				ini["Override"]["fAdditiveLimit"] = settings.OverrideAdditiveLimit.ToString(CultureInfo.InvariantCulture);
+				ini["Override"]["iUnequipAction"] = settings.OverrideUnequipAction.Item1.ToString(CultureInfo.InvariantCulture);
+				ini["Override"]["bOverrideUnequipDropChance"] = settings.OverrideUnequipDropChance ? "1" : "0";
+				ini["Override"]["fUnequipDropChance"] = settings.OverrideUnequipDropChanceValue.ToString(CultureInfo.InvariantCulture);
 
 				for (int i = 0; i < settings.SliderSetList.Count; i++)
 				{
@@ -142,6 +150,8 @@ namespace RmrHelper.Service
 					ini[$"Slider{i}"]["fThresholdMax"] = set.UpperThreshold.ToString(CultureInfo.InvariantCulture);
 					ini[$"Slider{i}"]["sUnequipSlot"] = set.ArmorSlotsToUnequip;
 					ini[$"Slider{i}"]["fThresholdUnequip"] = set.UnequipThreshold.ToString(CultureInfo.InvariantCulture);
+					ini[$"Slider{i}"]["iUnequipAction"] = set.UnequipAction.Item1.ToString(CultureInfo.InvariantCulture);
+					ini[$"Slider{i}"]["fUnequipDropChance"] = set.UnequipDropChance.ToString(CultureInfo.InvariantCulture);
 					ini[$"Slider{i}"]["bOnlyDoctorCanReset"] = set.OnlyDoctorCanReset ? "1" : "0";
 					ini[$"Slider{i}"]["bIsAdditive"] = set.IsAdditive ? "1" : "0";
 					ini[$"Slider{i}"]["bHasAdditiveLimit"] = set.HasAdditiveLimit ? "1" : "0";

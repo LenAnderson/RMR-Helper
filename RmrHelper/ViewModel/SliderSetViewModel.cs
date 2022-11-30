@@ -175,6 +175,40 @@ namespace RmrHelper.ViewModel
 			}
 		}
 
+		public List<Tuple<int, string>> UnequipActionList { get; set; } = new List<Tuple<int, string>>
+		{
+			new Tuple<int, string>(0, "Unequip"),
+			new Tuple<int, string>(1, "Drop"),
+			new Tuple<int, string>(2, "Destroy")
+		};
+		private Tuple<int, string> _unequipAction;
+		public Tuple<int,string> UnequipAction
+        {
+			get { return _unequipAction; }
+			set
+            {
+				if (_unequipAction != value)
+                {
+					_unequipAction = value;
+					OnPropertyChanged(nameof(UnequipAction));
+                }
+            }
+        }
+
+		private int _unequipDropChance;
+		public int UnequipDropChance
+        {
+            get { return _unequipDropChance; }
+            set
+            {
+				if (_unequipDropChance != value)
+                {
+					_unequipDropChance = value;
+					OnPropertyChanged(nameof(UnequipDropChance));
+                }
+            }
+        }
+
 		public List<Tuple<int, string>> ApplyToList { get; set; } = new List<Tuple<int, string>>
 		{
 			new Tuple<int, string>(0, "Player only"),

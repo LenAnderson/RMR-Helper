@@ -94,6 +94,55 @@ namespace RmrHelper.ViewModel
 			}
 		}
 
+		public List<Tuple<int, string>> OverrideUnequipActionList { get; set; } = new List<Tuple<int, string>>
+		{
+			new Tuple<int, string>(0, "No Override"),
+			new Tuple<int, string>(1, "Unequip"),
+			new Tuple<int, string>(2, "Drop"),
+			new Tuple<int, string>(3, "Destroy")
+		};
+		private Tuple<int, string> _overrideUnequipAction;
+		public Tuple<int,string> OverrideUnequipAction
+        {
+			get { return _overrideUnequipAction; }
+            set
+            {
+				if (_overrideUnequipAction != value)
+                {
+					_overrideUnequipAction = value;
+					OnPropertyChanged(nameof(OverrideUnequipAction));
+                }
+            }
+        }
+
+		private bool _overrideUnequipDropChance;
+		public bool OverrideUnequipDropChance
+        {
+            get { return _overrideUnequipDropChance;}
+            set
+            {
+				if (_overrideUnequipDropChance != value)
+                {
+					_overrideUnequipDropChance = value;
+					OnPropertyChanged(nameof(OverrideUnequipDropChance));
+                }
+            }
+        }
+
+		private int _overrideUnequipDropChanceValue;
+		public int OverrideUnequipDropChanceValue
+        {
+            get { return _overrideUnequipDropChanceValue;}
+            set
+            {
+				if (_overrideUnequipDropChanceValue != value)
+                {
+					_overrideUnequipDropChanceValue = value;
+					OnPropertyChanged(nameof(OverrideUnequipDropChanceValue));
+                }
+            }
+        }
+
 		int _numberOfSliderSets { get; set; }
 		public int NumberOfSliderSets
 		{
