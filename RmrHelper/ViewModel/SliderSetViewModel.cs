@@ -367,9 +367,9 @@ namespace RmrHelper.ViewModel
 				morph += additive;
 			}
 
-			// ( V / (4/3π) )^1/3
-			var dblMorph = Math.Pow(morph / (4d / Math.PI), 1d / 3d);
-			morph = (float)dblMorph;
+			// r = (V / (4/3π) )^1/3
+			//var dblMorph = Math.Pow(morph / (4d / Math.PI), 1d / 3d);
+			//morph = (float)dblMorph;
 
 			return (int)(TargetSizeIncrease * morph);
 		}
