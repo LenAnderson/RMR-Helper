@@ -1,0 +1,34 @@
+﻿<UserControl
+    x:Class="RmrHelper.Controls.InputSlider"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:RmrHelper.Controls"
+    
+    mc:Ignorable="d" 
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    
+	xmlns:ui="http://schemas.modernwpf.com/2019"
+    >
+    <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12">
+        <ui:NumberBox
+            VerticalAlignment="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=Alignment}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=TypedMinimum}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=TypedMaximum}"
+            Value="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=Value}"
+            />
+        <Slider
+            VerticalAlignment="Top"
+            Width="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=SliderWidth}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=Minimum}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=Maximum}"
+			TickFrequency="100"
+			TickPlacement="Both"
+			IsMoveToPointEnabled="True"
+            Value="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=Value}"
+            ui:ControlHelper.Header="{Binding RelativeSource={RelativeSource AncestorType=local:InputSlider}, Path=Header}"
+            />
+    </ui:SimpleStackPanel>
+</UserControl>

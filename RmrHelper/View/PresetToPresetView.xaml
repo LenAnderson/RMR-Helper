@@ -9,6 +9,7 @@
 	
 	xmlns:local="clr-namespace:RmrHelper.View"
 	xmlns:vm="clr-namespace:RmrHelper.ViewModel"
+    xmlns:c="clr-namespace:RmrHelper.Controls"
 	
 	xmlns:ui="http://schemas.modernwpf.com/2019"
 	
@@ -90,31 +91,27 @@
         </DockPanel>
         <ui:SimpleStackPanel Orientation="Vertical" HorizontalAlignment="Left">
             <TextBlock Text="Lower threshold" />
-            <TextBlock Width="40" VerticalAlignment="Center" Text="{Binding LowerThreshold}" />
-            <Slider
-				VerticalAlignment="Center"
-				Width="100"
-				Minimum="0"
-				Maximum="100"
-				TickFrequency="100"
-				TickPlacement="Both"
-				IsMoveToPointEnabled="True"
-				Value="{Binding LowerThreshold}"
-				/>
+            <c:InputSlider
+                SliderWidth="100"
+                Minimum="0"
+                Maximum="100"
+                TypedMinimum="0"
+                TypedMaximum="100"
+                Value="{Binding LowerThreshold}"
+                Alignment="Center"
+                />
         </ui:SimpleStackPanel>
         <ui:SimpleStackPanel Orientation="Vertical" HorizontalAlignment="Left">
             <TextBlock Text="Upper threshold" />
-            <TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UpperThreshold}" />
-            <Slider
-				VerticalAlignment="Center"
-				Width="100"
-				Minimum="0"
-				Maximum="100"
-				TickFrequency="100"
-				TickPlacement="Both"
-				IsMoveToPointEnabled="True"
-				Value="{Binding UpperThreshold}"
-				/>
+            <c:InputSlider
+                SliderWidth="100"
+                Minimum="1"
+                Maximum="100"
+                TypedMinimum="1"
+                TypedMaximum="100"
+                Value="{Binding UpperThreshold}"
+                Alignment="Center"
+                />
         </ui:SimpleStackPanel>
     </ui:SimpleStackPanel>
 </ui:ContentDialog>

@@ -9,6 +9,7 @@
 	
 	xmlns:local="clr-namespace:RmrHelper.View"
 	xmlns:vm="clr-namespace:RmrHelper.ViewModel"
+    xmlns:c="clr-namespace:RmrHelper.Controls"
 	
 	xmlns:ui="http://schemas.modernwpf.com/2019"
 	ui:WindowHelper.UseModernWindowStyle="True"
@@ -109,33 +110,23 @@
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
 								<ui:SimpleStackPanel Orientation="Horizontal">
-									<TextBlock Width="200" VerticalAlignment="Top" Text="{Binding Name}" />
-									<Slider
-                                        VerticalAlignment="Top"
-                                        Width="140"
+                                    <TextBlock Width="200" VerticalAlignment="Top" Text="{Binding Name}" />
+                                    <c:InputSlider
+                                        SliderWidth="140"
                                         Minimum="0"
                                         Maximum="100"
-										TickFrequency="100"
-										TickPlacement="Both"
-										IsMoveToPointEnabled="True"
                                         Value="{Binding Value}"
-                                        ui:ControlHelper.Header="Value"
+                                        Header="Value"
                                         />
-									<TextBlock Width="40" VerticalAlignment="Top" Text="{Binding Value}" />
-									<ui:AppBarSeparator />
-									<Slider
-                                        VerticalAlignment="Top"
-                                        Width="140"
+                                    <ui:AppBarSeparator VerticalAlignment="Center" />
+                                    <c:InputSlider
+                                        SliderWidth="140"
                                         Minimum="0"
                                         Maximum="100"
-										TickFrequency="100"
-										TickPlacement="Both"
-										IsMoveToPointEnabled="True"
                                         Value="{Binding AdditiveValue}"
-                                        ui:ControlHelper.Header="Additive Value"
+                                        Header="Additive Value"
                                         />
-									<TextBlock Width="40" VerticalAlignment="Top" Text="{Binding AdditiveValue}" />
-								</ui:SimpleStackPanel>
+                                </ui:SimpleStackPanel>
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
 					</ItemsControl>
@@ -216,24 +207,28 @@
 
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
                                         <TextBlock Width="200" VerticalAlignment="Center" Text="Apply to" />
-                                        <ComboBox ItemsSource="{Binding ApplyToList}" SelectedItem="{Binding ApplyTo}">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Item2}" />
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
+                                        <ui:SimpleStackPanel VerticalAlignment="Center">
+                                            <ComboBox ItemsSource="{Binding ApplyToList}" SelectedItem="{Binding ApplyTo}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Item2}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </ui:SimpleStackPanel>
                                     </ui:SimpleStackPanel>
 
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
                                         <TextBlock Width="200" VerticalAlignment="Center" Text="Sex" />
-                                        <ComboBox ItemsSource="{Binding SexList}" SelectedItem="{Binding Sex}">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Item2}" />
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
+                                        <ui:SimpleStackPanel VerticalAlignment="Center">
+                                            <ComboBox ItemsSource="{Binding SexList}" SelectedItem="{Binding Sex}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Item2}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </ui:SimpleStackPanel>
                                     </ui:SimpleStackPanel>
 
                                     <DockPanel Margin="0 15 0 0">
@@ -243,27 +238,30 @@
 
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Trigger name" />
-										<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.TriggerNames}" SelectedItem="{Binding TriggerName}">
-											<ComboBox.ItemTemplate>
-												<DataTemplate>
-													<TextBlock Text="{Binding}" />
-												</DataTemplate>
-											</ComboBox.ItemTemplate>
-										</ComboBox>
-									</ui:SimpleStackPanel>
+                                        <ui:SimpleStackPanel VerticalAlignment="Center">
+                                            <ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.TriggerNames}" SelectedItem="{Binding TriggerName}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </ui:SimpleStackPanel>
+                                    </ui:SimpleStackPanel>
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
 										<CheckBox IsChecked="{Binding InvertTriggerValue}" Content="Invert Trigger Value" />
 									</ui:SimpleStackPanel>
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Update type" />
-										<!--<ComboBox ItemsSource="{Binding Source={x:Reference TheWindow}, Path=DataContext.UpdateTypeList}" SelectedItem="{Binding UpdateType}">-->
-										<ComboBox ItemsSource="{Binding UpdateTypeList}" SelectedItem="{Binding UpdateType}">
-											<ComboBox.ItemTemplate>
-												<DataTemplate>
-													<TextBlock Text="{Binding Item2}" />
-												</DataTemplate>
-											</ComboBox.ItemTemplate>
-										</ComboBox>
+                                        <ui:SimpleStackPanel VerticalAlignment="Center">
+                                            <ComboBox ItemsSource="{Binding UpdateTypeList}" SelectedItem="{Binding UpdateType}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Item2}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </ui:SimpleStackPanel>
                                     </ui:SimpleStackPanel>
 
                                     <DockPanel Margin="0 15 0 0">
@@ -272,46 +270,38 @@
                                     </DockPanel>
 
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
-										<TextBlock Width="200" VerticalAlignment="Center" Text="Target size increase" />
-										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding TargetSizeIncrease}" />
-										<Slider
-											VerticalAlignment="Center"
-											Width="400"
-											Minimum="-200"
-											Maximum="200"
-											TickFrequency="100"
-											TickPlacement="Both"
-											IsMoveToPointEnabled="True"
-											Value="{Binding TargetSizeIncrease}"
-											/>
+                                        <TextBlock Width="200" VerticalAlignment="Center" Text="Target size increase" />
+                                        <c:InputSlider
+                                            SliderWidth="400"
+                                            Minimum="-200"
+                                            Maximum="200"
+                                            Value="{Binding TargetSizeIncrease}"
+                                            Alignment="Center"
+                                            />
+                                    </ui:SimpleStackPanel>
+                                    <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
+                                        <TextBlock Width="200" VerticalAlignment="Center" Text="Lower threshold" />
+                                        <c:InputSlider
+                                            SliderWidth="100"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            TypedMinimum="0"
+                                            TypedMaximum="100"
+                                            Value="{Binding LowerThreshold}"
+                                            Alignment="Center"
+                                            />
 									</ui:SimpleStackPanel>
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
-										<TextBlock Width="200" VerticalAlignment="Center" Text="Lower threshold" />
-										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding LowerThreshold}" />
-										<Slider
-											VerticalAlignment="Center"
-											Width="100"
-											Minimum="0"
-											Maximum="100"
-											TickFrequency="100"
-											TickPlacement="Both"
-											IsMoveToPointEnabled="True"
-											Value="{Binding LowerThreshold}"
-											/>
-									</ui:SimpleStackPanel>
-                                    <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
-										<TextBlock Width="200" VerticalAlignment="Center" Text="Upper threshold" />
-										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UpperThreshold}" />
-										<Slider
-											VerticalAlignment="Center"
-											Width="100"
-											Minimum="0"
-											Maximum="100"
-											TickFrequency="100"
-											TickPlacement="Both"
-											IsMoveToPointEnabled="True"
-											Value="{Binding UpperThreshold}"
-											/>
+                                        <TextBlock Width="200" VerticalAlignment="Center" Text="Upper threshold" />
+                                        <c:InputSlider
+                                            SliderWidth="100"
+                                            Minimum="1"
+                                            Maximum="100"
+                                            TypedMinimum="1"
+                                            TypedMaximum="100"
+                                            Value="{Binding UpperThreshold}"
+                                            Alignment="Center"
+                                            />
                                     </ui:SimpleStackPanel>
 
                                     <DockPanel Margin="0 15 0 0">
@@ -321,45 +311,44 @@
 
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
 										<TextBlock Width="200" VerticalAlignment="Center" Text="Armor slots to unequip" />
-										<TextBox Text="{Binding ArmorSlotsToUnequip}" />
-									</ui:SimpleStackPanel>
+                                        <ui:SimpleStackPanel VerticalAlignment="Center">
+                                            <TextBox Text="{Binding ArmorSlotsToUnequip}" />
+                                        </ui:SimpleStackPanel>
+                                    </ui:SimpleStackPanel>
                                     <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
-										<TextBlock Width="200" VerticalAlignment="Center" Text="Unequip Threshold" />
-										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UnequipThreshold}" />
-										<Slider
-											VerticalAlignment="Center"
-											Minimum="0"
-											Maximum="100"
-											Width="100"
-											TickFrequency="100"
-											TickPlacement="Both"
-											IsMoveToPointEnabled="True"
-											Value="{Binding UnequipThreshold}"
-											/>
+                                        <TextBlock Width="200" VerticalAlignment="Center" Text="Unequip Threshold" />
+                                        <c:InputSlider
+                                            SliderWidth="100"
+                                            Minimum="1"
+                                            Maximum="100"
+                                            TypedMinimum="1"
+                                            Value="{Binding UnequipThreshold}"
+                                            Alignment="Center"
+                                            />
                                     </ui:SimpleStackPanel>
                                     <ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
                                         <TextBlock Width="200" VerticalAlignment="Center" Text="Unequip action" />
-                                        <ComboBox ItemsSource="{Binding UnequipActionList}" SelectedItem="{Binding UnequipAction}">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Item2}" />
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
+                                        <ui:SimpleStackPanel>
+                                            <ComboBox ItemsSource="{Binding UnequipActionList}" SelectedItem="{Binding UnequipAction}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Item2}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </ui:SimpleStackPanel>
                                     </ui:SimpleStackPanel>
                                     <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
                                         <TextBlock Width="200" VerticalAlignment="Center" Text="Drop Chance" />
-                                        <TextBlock Width="40" VerticalAlignment="Center" Text="{Binding UnequipDropChance}" />
-                                        <Slider
-											VerticalAlignment="Center"
-											Minimum="0"
-											Maximum="100"
-											Width="100"
-											TickFrequency="100"
-											TickPlacement="Both"
-											IsMoveToPointEnabled="True"
-											Value="{Binding UnequipDropChance}"
-											/>
+                                        <c:InputSlider
+                                            SliderWidth="100"
+                                            Minimum="1"
+                                            Maximum="100"
+                                            TypedMinimum="0"
+                                            TypedMaximum="100"
+                                            Value="{Binding UnequipDropChance}"
+                                            Alignment="Center"
+                                            />
                                     </ui:SimpleStackPanel>
 
                                     <DockPanel Margin="0 15 0 0">
@@ -377,18 +366,17 @@
 										<CheckBox Content="Limit additive morphing" IsChecked="{Binding HasAdditiveLimit}" />
 									</ui:SimpleStackPanel>
                                     <ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
-										<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
-										<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding AdditiveLimit}" />
-										<Slider
-											VerticalAlignment="Center"
-											Minimum="0"
-											Maximum="600"
-											Width="600"
-											TickFrequency="100"
-											TickPlacement="Both"
-											IsMoveToPointEnabled="True"
-											IsEnabled="{Binding HasAdditiveLimit}" Value="{Binding AdditiveLimit}"
-											/>
+                                        <TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
+                                        <c:InputSlider
+                                            SliderWidth="600"
+                                            Minimum="0"
+                                            Maximum="600"
+                                            TypedMinimum="0"
+                                            TypedMaximum="999"
+                                            IsEnabled="{Binding HasAdditiveLimit}"
+                                            Value="{Binding AdditiveLimit}"
+                                            Alignment="Center"
+                                            />
 									</ui:SimpleStackPanel>
 								</ui:SimpleStackPanel>
 							</ScrollViewer>
@@ -407,45 +395,47 @@
                     
 						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
 							<TextBlock Width="200" VerticalAlignment="Center" Text="Only doctors can reset morphs" />
-							<ComboBox
+                            <ui:SimpleStackPanel VerticalAlignment="Center">
+                                <ComboBox
 								ItemsSource="{Binding RmrSettings.OverrideBool}"
 								SelectedValue="{Binding RmrSettings.OverrideOnlyDoctorCanReset}"
 								SelectedValuePath="Key"
 								DisplayMemberPath="Value"
 								/>
-						</ui:SimpleStackPanel>
+                            </ui:SimpleStackPanel>
+                        </ui:SimpleStackPanel>
 						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
 							<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing" />
-							<ComboBox
+                            <ui:SimpleStackPanel VerticalAlignment="Center">
+                                <ComboBox
 								ItemsSource="{Binding RmrSettings.OverrideBool}"
 								SelectedValue="{Binding RmrSettings.OverrideIsAdditive}"
 								SelectedValuePath="Key"
 								DisplayMemberPath="Value"
 								/>
-						</ui:SimpleStackPanel>
+                            </ui:SimpleStackPanel>
+                        </ui:SimpleStackPanel>
 						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
 							<TextBlock Width="200" VerticalAlignment="Center" Text="Limit additive morphing" />
-							<ComboBox
+                            <ui:SimpleStackPanel VerticalAlignment="Center">
+                                <ComboBox
 								ItemsSource="{Binding RmrSettings.OverrideBool}"
 								SelectedValue="{Binding RmrSettings.OverrideHasAdditiveLimit}"
 								SelectedValuePath="Key"
 								DisplayMemberPath="Value"
 								/>
-						</ui:SimpleStackPanel>
+                            </ui:SimpleStackPanel>
+                        </ui:SimpleStackPanel>
 						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
-							<TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
-							<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding RmrSettings.OverrideAdditiveLimit}" />
-							<Slider
-								VerticalAlignment="Center"
-								Minimum="0"
-								Maximum="600"
-								Width="600"
-								TickFrequency="100"
-								TickPlacement="Both"
-								IsMoveToPointEnabled="True"
+                            <TextBlock Width="200" VerticalAlignment="Center" Text="Additive morphing limit" />
+                            <c:InputSlider
+                                SliderWidth="600"
+                                Minimum="0"
+                                Maximum="600"
 								IsEnabled="{Binding RmrSettings.OverrideHasAdditiveLimit}"
-								Value="{Binding RmrSettings.OverrideAdditiveLimit}"
-								/>
+                                Value="{Binding RmrSettings.OverrideAdditiveLimit}"
+                                Alignment="Center"
+                                />
 						</ui:SimpleStackPanel>
 
 						<DockPanel Margin="0 15 0 0">
@@ -455,31 +445,31 @@
                     
 						<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
 							<TextBlock Width="200" VerticalAlignment="Center" Text="Unequip action" />
-							<ComboBox ItemsSource="{Binding RmrSettings.OverrideUnequipActionList}" SelectedItem="{Binding RmrSettings.OverrideUnequipAction}">
-								<ComboBox.ItemTemplate>
-									<DataTemplate>
-										<TextBlock Text="{Binding Item2}" />
-									</DataTemplate>
-								</ComboBox.ItemTemplate>
-							</ComboBox>
-						</ui:SimpleStackPanel>
+                            <ui:SimpleStackPanel VerticalAlignment="Center">
+                                <ComboBox ItemsSource="{Binding RmrSettings.OverrideUnequipActionList}" SelectedItem="{Binding RmrSettings.OverrideUnequipAction}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Item2}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </ui:SimpleStackPanel>
+                        </ui:SimpleStackPanel>
 						<ui:SimpleStackPanel Orientation="Horizontal" Height="40" Spacing="10" Margin="10 0 0 0">
 							<CheckBox IsChecked="{Binding RmrSettings.OverrideUnequipDropChance}" Content="Override Drop Chance" />
 						</ui:SimpleStackPanel>
 						<ui:SimpleStackPanel Orientation="Horizontal" Spacing="12" Margin="10 0 0 0">
 							<TextBlock Width="200" VerticalAlignment="Center" Text="Drop Chance" />
-							<TextBlock Width="40" VerticalAlignment="Center" Text="{Binding RmrSettings.OverrideUnequipDropChanceValue}" />
-							<Slider
-								VerticalAlignment="Center"
-								Minimum="0"
-								Maximum="100"
-								Width="100"
-								TickFrequency="100"
-								TickPlacement="Both"
-								IsMoveToPointEnabled="True"
-								Value="{Binding RmrSettings.OverrideUnequipDropChanceValue}"
-								/>
-						</ui:SimpleStackPanel>
+                            <c:InputSlider
+                                SliderWidth="100"
+                                Minimum="0"
+                                Maximum="100"
+                                TypedMinimum="0"
+                                TypedMaximum="100"
+                                Value="{Binding RmrSettings.OverrideUnequipDropChanceValue}"
+                                Alignment="Center"
+                                />
+                        </ui:SimpleStackPanel>
 					</ui:SimpleStackPanel>
                 </ScrollViewer>
             </TabItem>
