@@ -113,7 +113,7 @@ namespace RmrHelper.Service
 
 		public void SaveRmrSettings(string bufferPath, string userPath, RmrSettingsViewModel settings)
 		{
-			Logger.Log($"RmrSettingsService.PopulateRmrSettings: bufferPath={bufferPath}; userPath={userPath}");
+			Logger.Log($"RmrSettingsService.SaveRmrSettings: bufferPath={bufferPath}; userPath={userPath}");
 			try
 			{
 				var parser = new FileIniDataParser();
