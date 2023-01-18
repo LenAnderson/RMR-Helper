@@ -24,11 +24,16 @@ namespace RmrHelper.Service
 				var parser = new FileIniDataParser();
 				if (File.Exists(defaultsPath))
 				{
+					Logger.Log("found defaults ini");
 					var ini = parser.ReadFile(defaultsPath);
+					Logger.Log("parsed defaults ini");
 					if (File.Exists(userPath))
 					{
+						Logger.Log("found user ini");
 						var userIni = parser.ReadFile(userPath);
+						Logger.Log("parsed user ini");
 						ini.Merge(userIni);
+						Logger.Log("merged defaults and user ini");
 
 						settings.NumberOfSliderSets = int.Parse(ini["Static"]["iNumberOfSliderSets"], CultureInfo.InvariantCulture);
 						settings.OverrideOnlyDoctorCanReset = int.Parse(ini["Override"]["iOnlyDoctorCanReset"], CultureInfo.InvariantCulture);
@@ -38,17 +43,21 @@ namespace RmrHelper.Service
 						settings.OverrideUnequipAction = settings.OverrideUnequipActionList.FirstOrDefault(it=>it.Item1==int.Parse(ini["Override"]["iUnequipAction"] ?? "-1", CultureInfo.InvariantCulture));
 						settings.OverrideUnequipDropChance = int.Parse(ini["Override"]["bOverrideUnequipDropChance"] ?? "0") == 1;
 						settings.OverrideUnequipDropChanceValue = (int)float.Parse(ini["Override"]["fUnequipDropChance"] ?? "0.0", CultureInfo.InvariantCulture);
+						Logger.Log("parsed static and override settings");
 
 						for (int i = 0; i < settings.NumberOfSliderSets; i++)
 						{
+							Logger.Log($"parsing slider set {i}");
 							var section = ini[$"Slider{i}"];
 							SliderSetViewModel sliderSet;
 							if (settings.SliderSetList.Count > i)
 							{
+								Logger.Log("getting existing slider set");
 								sliderSet = settings.SliderSetList[i];
 							}
 							else
 							{
+								Logger.Log("adding new slider set");
 								sliderSet = new SliderSetViewModel();
 								settings.AddSliderSet(sliderSet);
 							}
@@ -70,10 +79,12 @@ namespace RmrHelper.Service
 							{
 								sliderSet.TriggerName = null;
 							}
+							Logger.Log("parsed basics");
 							sliderSet.UpdateType = sliderSet.UpdateTypeList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUpdateType"]));
 							sliderSet.ApplyTo = sliderSet.ApplyToList.FirstOrDefault(it => it.Item1 == int.Parse(section["iApplyTo"] ?? "-1"));
 							sliderSet.UnequipAction = sliderSet.UnequipActionList.FirstOrDefault(it => it.Item1 == int.Parse(section["iUnequipAction"] ?? "-1"));
 							sliderSet.Sex = sliderSet.SexList.FirstOrDefault(it => it.Item1 == int.Parse(section["iSex"] ?? "-1"));
+							Logger.Log("parsed dropdowns");
 						}
 						for (int i = settings.NumberOfSliderSets; i < settings.SliderSetList.Count; i++)
 						{
@@ -120,10 +131,13 @@ namespace RmrHelper.Service
 				IniData ini;
 				if (File.Exists(userPath))
 				{
+					Logger.Log("found user ini");
 					ini = parser.ReadFile(userPath);
+					Logger.Log("parsed user ini");
 				}
 				else
 				{
+					Logger.Log("user ini not found, starting with blank ini");
 					ini = new IniData();
 				}
 				var now = DateTime.Now;
@@ -135,9 +149,11 @@ namespace RmrHelper.Service
 				ini["Override"]["iUnequipAction"] = settings.OverrideUnequipAction.Item1.ToString(CultureInfo.InvariantCulture);
 				ini["Override"]["bOverrideUnequipDropChance"] = settings.OverrideUnequipDropChance ? "1" : "0";
 				ini["Override"]["fUnequipDropChance"] = settings.OverrideUnequipDropChanceValue.ToString(CultureInfo.InvariantCulture);
+				Logger.Log("finished setting static and override settings into ini dict");
 
 				for (int i = 0; i < settings.SliderSetList.Count; i++)
 				{
+					Logger.Log($"slider set {i}");
 					var set = settings.SliderSetList[i];
 					ini[$"Slider{i}"]["sSliderName"] = set.SliderNames;
 					ini[$"Slider{i}"]["iApplyTo"] = set.ApplyTo.Item1.ToString(CultureInfo.InvariantCulture);
@@ -158,8 +174,11 @@ namespace RmrHelper.Service
 					ini[$"Slider{i}"]["fAdditiveLimit"] = set.AdditiveLimit.ToString(CultureInfo.InvariantCulture);
 				}
 
+				Logger.Log("create directory");
 				Directory.CreateDirectory(Path.GetDirectoryName(bufferPath));
+				Logger.Log("write buffer file");
 				parser.WriteFile(bufferPath, ini);
+				Logger.Log("write user file");
 				File.WriteAllText(userPath, $"\n{File.ReadAllText(bufferPath)}");
 				Logger.Log($"ini saved to {userPath}");
 			}
