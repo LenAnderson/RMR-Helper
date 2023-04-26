@@ -312,6 +312,8 @@ namespace RmrHelper.ViewModel
 		{
 			_addSliderDialog = new AddSliderView();
 			_addSliderDialogContext = _addSliderDialog.DataContext as AddSliderViewModel;
+
+			_unequipAction = UnequipActionList[0];
 		}
 
 
