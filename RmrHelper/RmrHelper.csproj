@@ -175,4 +175,7 @@
   <PropertyGroup>
     <PostBuildEvent>for /f %25%25i in ('dir /a:d /s /b *-*') do rd /s /q %25%25i</PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PathMap>$(MSBuildProjectDirectory)=.</PathMap>
+  </PropertyGroup>
 </Project>
